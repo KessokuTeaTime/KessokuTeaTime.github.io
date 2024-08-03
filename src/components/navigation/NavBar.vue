@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
 </script>
 
@@ -8,18 +9,22 @@ import IconLogo from '@/components/icons/IconLogo.vue'
     <nav>
       <div class="leading">
         <RouterLink to="/" class="content">
-          <IconLogo class="logo" />
+          <IconLogo class="icon" />
         </RouterLink>
       </div>
       <div class="body">
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
       </div>
-      <div class="trailing"></div>
+      <div class="trailing">
+        <a href="" class="content">
+          <FontAwesomeIcon :icon="['fab', 'github']" class="icon" />
+        </a>
+      </div>
     </nav>
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 nav {
   position: fixed;
   top: 0;
@@ -46,19 +51,32 @@ nav {
   }
 }
 
+/*
 .leading,
 .body,
 .trailing {
   border: 1px solid red;
 }
+  */
 
 .content {
-  padding: 15%;
+  padding: 30%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:has(#logo) {
+    padding: 15%;
+  }
 }
 
-.logo {
+.icon {
   height: 100%;
   aspect-ratio: 1/1;
+}
+
+a {
+  color: var(--color-text);
 }
 </style>
