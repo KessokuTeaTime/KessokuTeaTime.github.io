@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
+import { computed } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
 
@@ -28,9 +29,15 @@ const routes: Route[] = [
           <IconLogo class="icon" />
         </RouterLink>
       </div>
-      <div class="body" v-for="route in routes" :key="route.path">
-        <RouterLink :to="route.path">{{ route.name }}</RouterLink>
+
+      <div class="spacer leading"></div>
+      <div class="body">
+        <RouterLink v-for="route in routes" :key="route.path" :to="route.path">
+          {{ route.name }}
+        </RouterLink>
       </div>
+      <div class="spacer trailing"></div>
+
       <div class="trailing">
         <a href="https://github.com/KessokuTeaTime" target="_blank" class="content">
           <FontAwesomeIcon :icon="['fab', 'github']" class="icon" />
@@ -67,13 +74,22 @@ nav {
   }
 }
 
-/*
-.leading,
-.body,
-.trailing {
-  border: 1px solid red;
+.spacer {
+  height: 100%;
+  flex-grow: 1;
+  background: red;
 }
-  */
+
+.body {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  > * {
+    margin: 0 1rem;
+  }
+}
 
 .content {
   padding: 30%;

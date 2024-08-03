@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import NavBar from './components/navigation/NavBar.vue'
+import NavBarWide from './components/navigation/NavBarWide.vue'
+import NavBarNarrow from './components/navigation/NavBarNarrow.vue'
 </script>
 
 <template>
   <header>
-    <NavBar />
+    <NavBarWide v-if="$screen.width > 1024" />
+    <NavBarNarrow v-else />
   </header>
 
   <main>
