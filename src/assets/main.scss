@@ -23,6 +23,22 @@ a {
   color: var(--color-tint);
 }
 
+.tint-kita {
+  color: var(--color-tint-red);
+}
+
+.tint-ryo {
+  color: var(--color-tint-blue);
+}
+
+.tint-bocchi {
+  color: var(--color-tint-pink);
+}
+
+.tint-nijika {
+  color: var(--color-tint-yellow);
+}
+
 ::selection {
   background: var(--color-selection);
 }

@@ -1,13 +1,5 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-tint-light: rgb(244, 58, 148);
-  --vt-c-tint-light-1: rgba(244, 58, 148, 0.29);
-  --vt-c-tint-light-2: rgb(244, 58, 148, 0.12);
-
-  --vt-c-tint-dark: rgb(253, 92, 146);
-  --vt-c-tint-dark-1: rgb(253, 92, 146, 0.65);
-  --vt-c-tint-dark-2: rgb(253, 92, 146, 0.48);
-
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;
   --vt-c-white-mute: #f2f2f2;
@@ -29,17 +21,74 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 }
 
+/* tints */
+:root {
+  /* kita */
+  --vt-c-tint-red-light: rgb(253, 66, 66);
+  --vt-c-tint-red-light-1: rgba(235, 40, 40, 0.29);
+  --vt-c-tint-red-light-2: rgb(235, 40, 40, 0.12);
+
+  --vt-c-tint-red-dark: rgb(255, 78, 78);
+  --vt-c-tint-red-dark-1: rgb(255, 78, 78, 0.65);
+  --vt-c-tint-red-dark-2: rgb(255, 78, 78, 0.48);
+
+  /* ryo */
+  --vt-c-tint-blue-light: rgb(36, 123, 236);
+  --vt-c-tint-blue-light-1: rgba(36, 123, 236, 0.29);
+  --vt-c-tint-blue-light-2: rgb(36, 123, 236, 0.12);
+
+  --vt-c-tint-blue-dark: rgb(90, 134, 255);
+  --vt-c-tint-blue-dark-1: rgb(90, 134, 255, 0.65);
+  --vt-c-tint-blue-dark-2: rgb(90, 134, 255, 0.48);
+
+  /* bocchi */
+  --vt-c-tint-pink-light: rgb(244, 58, 148);
+  --vt-c-tint-pink-light-1: rgba(244, 58, 148, 0.29);
+  --vt-c-tint-pink-light-2: rgb(244, 58, 148, 0.12);
+
+  --vt-c-tint-pink-dark: rgb(253, 92, 146);
+  --vt-c-tint-pink-dark-1: rgb(253, 92, 146, 0.65);
+  --vt-c-tint-pink-dark-2: rgb(253, 92, 146, 0.48);
+
+  /* nijika */
+  --vt-c-tint-yellow-light: rgb(247, 199, 40);
+  --vt-c-tint-yellow-light-1: rgba(247, 233, 40, 0.29);
+  --vt-c-tint-yellow-light-2: rgb(247, 233, 40, 0.12);
+
+  --vt-c-tint-yellow-dark: rgb(255, 216, 86);
+  --vt-c-tint-yellow-dark-1: rgb(255, 216, 86, 0.65);
+  --vt-c-tint-yellow-dark-2: rgb(255, 216, 86, 0.48);
+}
+
 /* semantic color variables for this project */
 :root {
-  --color-tint: var(--vt-c-tint-light);
-  --color-tint-soft: var(--vt-c-tint-light-1);
-  --color-tint-mute: var(--vt-c-tint-light-2);
+  --color-tint-red: var(--vt-c-tint-red-light);
+  --color-tint-red-soft: var(--vt-c-tint-red-light-1);
+  --color-tint-red-mute: var(--vt-c-tint-red-light-2);
 
-  --color-link: var(--vt-c-tint-light);
-  --color-link-soft: var(--vt-c-tint-light-1);
-  --color-link-mute: var(--vt-c-tint-light-2);
+  --color-tint-blue: var(--vt-c-tint-blue-light);
+  --color-tint-blue-soft: var(--vt-c-tint-blue-light-1);
+  --color-tint-blue-mute: var(--vt-c-tint-blue-light-2);
 
-  --color-selection: var(--vt-c-tint-light-2);
+  --color-tint-pink: var(--vt-c-tint-pink-light);
+  --color-tint-pink-soft: var(--vt-c-tint-pink-light-1);
+  --color-tint-pink-mute: var(--vt-c-tint-pink-light-2);
+
+  --color-tint-yellow: var(--vt-c-tint-yellow-light);
+  --color-tint-yellow-soft: var(--vt-c-tint-yellow-light-1);
+  --color-tint-yellow-mute: var(--vt-c-tint-yellow-light-2);
+}
+
+:root {
+  --color-tint: var(--vt-c-tint-pink-light);
+  --color-tint-soft: var(--vt-c-tint-pink-light-1);
+  --color-tint-mute: var(--vt-c-tint-pink-light-2);
+
+  --color-link: var(--vt-c-tint-pink-light);
+  --color-link-soft: var(--vt-c-tint-pink-light-1);
+  --color-link-mute: var(--vt-c-tint-pink-light-2);
+
+  --color-selection: var(--vt-c-tint-pink-light-2);
 
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
@@ -56,15 +105,33 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-tint: var(--vt-c-tint-dark);
-    --color-tint-soft: var(--vt-c-tint-dark-1);
-    --color-tint-mute: var(--vt-c-tint-dark-2);
+    --color-tint-red: var(--vt-c-tint-red-dark);
+    --color-tint-red-soft: var(--vt-c-tint-red-dark-1);
+    --color-tint-red-mute: var(--vt-c-tint-red-dark-2);
 
-    --color-link: var(--vt-c-tint-dark);
-    --color-link-soft: var(--vt-c-tint-dark-1);
-    --color-link-mute: var(--vt-c-tint-dark-2);
+    --color-tint-blue: var(--vt-c-tint-blue-dark);
+    --color-tint-blue-soft: var(--vt-c-tint-blue-dark-1);
+    --color-tint-blue-mute: var(--vt-c-tint-blue-dark-2);
 
-    --color-selection: var(--vt-c-tint-dark-2);
+    --color-tint-pink: var(--vt-c-tint-pink-dark);
+    --color-tint-pink-soft: var(--vt-c-tint-pink-dark-1);
+    --color-tint-pink-mute: var(--vt-c-tint-pink-dark-2);
+
+    --color-tint-yellow: var(--vt-c-tint-yellow-dark);
+    --color-tint-yellow-soft: var(--vt-c-tint-yellow-dark-1);
+    --color-tint-yellow-mute: var(--vt-c-tint-yellow-dark-2);
+  }
+
+  :root {
+    --color-tint: var(--vt-c-tint-pink-dark);
+    --color-tint-soft: var(--vt-c-tint-pink-dark-1);
+    --color-tint-mute: var(--vt-c-tint-pink-dark-2);
+
+    --color-link: var(--vt-c-tint-pink-dark);
+    --color-link-soft: var(--vt-c-tint-pink-dark-1);
+    --color-link-mute: var(--vt-c-tint-pink-dark-2);
+
+    --color-selection: var(--vt-c-tint-pink-dark-2);
 
     --color-background: var(--vt-c-black);
     --color-background-soft: var(--vt-c-black-soft);
