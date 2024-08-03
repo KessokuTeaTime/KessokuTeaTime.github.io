@@ -2,6 +2,22 @@
 import { RouterLink } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
+
+type Route = {
+  name: string
+  path: string
+}
+
+const routes: Route[] = [
+  {
+    name: 'About',
+    path: '/about'
+  },
+  {
+    name: 'Projects',
+    path: '/projects'
+  }
+]
 </script>
 
 <template>
@@ -12,8 +28,8 @@ import IconLogo from '@/components/icons/IconLogo.vue'
           <IconLogo class="icon" />
         </RouterLink>
       </div>
-      <div class="body">
-        <RouterLink to="/about">About</RouterLink>
+      <div class="body" v-for="route in routes" :key="route.path">
+        <RouterLink :to="route.path">{{ route.name }}</RouterLink>
       </div>
       <div class="trailing">
         <a href="https://github.com/KessokuTeaTime" target="_blank" class="content">
