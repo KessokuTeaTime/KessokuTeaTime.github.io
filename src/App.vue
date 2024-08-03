@@ -8,7 +8,13 @@ import NavBar from './components/navigation/NavBar.vue'
     <NavBar />
   </header>
 
-  <RouterView />
+  <main>
+    <RouterView />
+  </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  margin-top: 4rem;
+}
+</style>
