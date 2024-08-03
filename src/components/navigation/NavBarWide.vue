@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { RouterLink, useRoute, type _RouterLinkI } from 'vue-router'
+import { computed, onMounted, ref, type ComponentPublicInstance, type ComputedRef } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
 
@@ -8,6 +8,21 @@ type Route = {
   name: string
   path: string
 }
+
+const navs = ref<{ [key: string]: Element | ComponentPublicInstance | null }>({})
+const route = useRoute()
+const currentPath = computed(() => route.path)
+const currentRoute = computed(() => {
+  return routes.find((route) => route.path === currentPath.value)
+})
+const currentNav = computed(() => {
+  return navs.value[currentPath.value]
+})
+
+setInterval(() => {
+  console.log(currentRoute.value)
+  console.log(currentNav.value)
+}, 1000)
 
 const routes: Route[] = [
   {
@@ -32,7 +47,16 @@ const routes: Route[] = [
 
       <div class="spacer leading"></div>
       <div class="body">
-        <RouterLink v-for="route in routes" :key="route.path" :to="route.path">
+        <RouterLink
+          v-for="route in routes"
+          :key="route.path"
+          :to="route.path"
+          :ref="
+            (el) => {
+              navs[route.path] = el
+            }
+          "
+        >
           {{ route.name }}
         </RouterLink>
       </div>
@@ -47,7 +71,7 @@ const routes: Route[] = [
   </main>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 nav {
   position: fixed;
   top: 0;
