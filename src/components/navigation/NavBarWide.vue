@@ -9,14 +9,73 @@ type Route = {
   path: string
 }
 
-const navs = ref<{ [key: string]: Element | ComponentPublicInstance | null }>({})
+const navs = ref<HTMLElement[]>([])
+const spacerLeading = ref<HTMLElement | null>(null)
+const spacerTrailing = ref<HTMLElement | null>(null)
+
 const route = useRoute()
 const currentPath = computed(() => route.path)
 const currentRoute = computed(() => {
   return routes.find((route) => route.path === currentPath.value)
 })
 const currentNav = computed(() => {
-  return navs.value[currentPath.value]
+  return findNav(currentPath.value)
+})
+
+const availableWidth = computed(() => {
+  if (spacerLeading.value && spacerTrailing.value) {
+    return (
+      spacerTrailing.value?.getBoundingClientRect().right -
+      spacerLeading.value?.getBoundingClientRect().left
+    )
+  } else {
+    return 0
+  }
+})
+
+const adjustableWidth = computed(() => {
+  if (spacerLeading.value && spacerTrailing.value) {
+    return spacerLeading.value.offsetWidth + spacerTrailing.value.offsetWidth
+  } else {
+    return 0
+  }
+})
+
+const difference = computed(() => {
+  if (spacerLeading.value && spacerTrailing.value) {
+    return (
+      screen.width -
+      spacerTrailing.value.getBoundingClientRect().right -
+      spacerLeading.value.getBoundingClientRect().left
+    )
+  } else {
+    return 0
+  }
+})
+
+const leadingOffset = computed(() => {
+  if (spacerLeading.value && spacerTrailing.value && currentNav.value) {
+    let min = 0
+    let max = adjustableWidth.value
+
+    var offset = 0
+    for (let r of routes) {
+      if (r.path === currentPath.value) {
+        offset += currentNav.value.offsetWidth / 2
+        break
+      } else {
+        let nav = findNav(r.path)
+        if (nav) {
+          offset += nav.offsetWidth
+          console.log(r.path, nav.offsetWidth, offset)
+        }
+      }
+    }
+
+    return Math.max(min, Math.min(max, adjustableWidth.value / 2 + offset + difference.value))
+  } else {
+    return 0
+  }
 })
 
 setInterval(() => {
@@ -34,6 +93,10 @@ const routes: Route[] = [
     path: '/projects'
   }
 ]
+
+function findNav(path: string): HTMLElement | undefined {
+  return navs.value.find((nav) => nav.dataset.path === path)
+}
 </script>
 
 <template>
@@ -54,22 +117,23 @@ const routes: Route[] = [
         ></div>
       </div>
 
-      <div class="spacer leading"></div>
+      <div class="spacer leading" ref="spacerLeading"></div>
+
       <div class="body">
-        <RouterLink
+        <div
           v-for="route in routes"
           :key="route.path"
-          :to="route.path"
-          :ref="
-            (el) => {
-              navs[route.path] = el
-            }
-          "
+          :data-path="route.path"
+          ref="navs"
+          class="link"
         >
-          {{ route.name }}
-        </RouterLink>
+          <RouterLink :to="route.path">
+            {{ route.name }}
+          </RouterLink>
+        </div>
       </div>
-      <div class="spacer trailing"></div>
+
+      <div class="spacer trailing" ref="spacerTrailing"></div>
 
       <div class="content">
         <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
@@ -113,6 +177,14 @@ a {
   height: 100%;
   flex-grow: 1;
   background: red;
+
+  &.leading {
+    width: v-bind(leadingOffset);
+  }
+
+  &.trailing {
+    width: calc(v-bind(adjustableWidth) - v-bind(leadingOffset));
+  }
 }
 
 .body {
@@ -160,6 +232,14 @@ a {
     height: 0.5rem;
     aspect-ratio: 1/0.25;
     background-color: var(--color);
+  }
+}
+
+.link {
+  transition: scale 0.4s;
+
+  &:hover {
+    scale: 1.1;
   }
 }
 </style>
