@@ -16,6 +16,14 @@ a,
   padding: 3px;
 }
 
+.logo {
+  fill: black;
+
+  @media (prefers-color-scheme: dark) {
+    fill: white;
+  }
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(330, 83%, 59%, 0.2);

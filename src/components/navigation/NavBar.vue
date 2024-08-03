@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import IconLogo from '@/components/icons/IconLogo.vue'
 </script>
 
 <template>
   <main>
     <nav>
-      <div class="leading"></div>
+      <div class="leading">
+        <IconLogo class="logo content" />
+      </div>
       <div class="body">
         <RouterLink to="/">Home</RouterLink>
       </div>
@@ -45,5 +48,14 @@ nav {
 .body,
 .trailing {
   border: 1px solid red;
+}
+
+.content {
+  margin: 15%;
+  height: 100%;
+}
+
+.logo {
+  aspect-ratio: 1/1;
 }
 </style>
