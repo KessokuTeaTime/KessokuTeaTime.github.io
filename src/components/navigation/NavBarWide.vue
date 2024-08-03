@@ -39,10 +39,19 @@ const routes: Route[] = [
 <template>
   <main>
     <nav>
-      <div class="leading">
-        <RouterLink to="/" class="content">
+      <div class="content">
+        <RouterLink to="/" class="icon-wrapper content">
           <IconLogo class="icon" />
         </RouterLink>
+      </div>
+
+      <div class="content blocks">
+        <div
+          v-for="i in ['kita', 'ryo', 'bocchi', 'nijika']"
+          :key="i"
+          :class="`tint-${i}`"
+          class="block"
+        ></div>
       </div>
 
       <div class="spacer leading"></div>
@@ -62,9 +71,9 @@ const routes: Route[] = [
       </div>
       <div class="spacer trailing"></div>
 
-      <div class="trailing">
-        <a href="https://github.com/KessokuTeaTime" target="_blank" class="content">
-          <FontAwesomeIcon :icon="['fab', 'github']" class="icon" />
+      <div class="content">
+        <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
+          <div class="icon"><FontAwesomeIcon :icon="['fab', 'github']" /></div>
         </a>
       </div>
     </nav>
@@ -84,17 +93,19 @@ nav {
   align-items: center;
   z-index: 1;
 
-  > * {
-    height: 100%;
+  * {
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+  }
+}
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+a {
+  --color-link: var(--color-text);
+  --color-link-soft: var(--color-border-hover);
+  --color-link-mute: var(--color-border);
 
-    * {
-      font-family: 'Space Grotesk';
-      font-weight: 500;
-    }
+  &.icon-wrapper {
+    border: transparent;
   }
 }
 
@@ -116,29 +127,39 @@ nav {
 }
 
 .content {
-  padding: 30%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
-  &:has(#logo) {
-    padding: 15%;
+.icon-wrapper {
+  padding: 0.5rem;
+  height: 100%;
+
+  .icon {
+    height: 100%;
+    aspect-ratio: 1/1;
+    padding: 25%;
+
+    > * {
+      height: 100%;
+      width: 100%;
+    }
+
+    &:has(#logo) {
+      padding: 5%;
+    }
   }
 }
 
-.icon {
-  height: 100%;
-  aspect-ratio: 1/1;
-}
+.blocks {
+  padding: 0 1rem;
 
-a {
-  --color-link: var(--color-text);
-  --color-link-soft: var(--color-border-hover);
-  --color-link-mute: var(--color-border);
-
-  &:has(.icon) {
-    border: transparent;
+  .block {
+    height: 0.5rem;
+    aspect-ratio: 1/0.25;
+    background-color: var(--color);
   }
 }
 </style>

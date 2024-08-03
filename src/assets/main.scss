@@ -20,23 +20,28 @@ a {
 }
 
 .tint {
-  color: var(--color-tint);
+  --color: var(--color-tint);
+  color: var(--color);
 }
 
 .tint-kita {
-  color: var(--color-tint-red);
+  --color: var(--color-tint-red);
+  color: var(--color);
 }
 
 .tint-ryo {
-  color: var(--color-tint-blue);
+  --color: var(--color-tint-blue);
+  color: var(--color);
 }
 
 .tint-bocchi {
-  color: var(--color-tint-pink);
+  --color: var(--color-tint-pink);
+  color: var(--color);
 }
 
 .tint-nijika {
-  color: var(--color-tint-yellow);
+  --color: var(--color-tint-yellow);
+  color: var(--color);
 }
 
 ::selection {
@@ -44,11 +49,7 @@ a {
 }
 
 #logo {
-  fill: black;
-
-  @media (prefers-color-scheme: dark) {
-    fill: white;
-  }
+  fill: var(--color-text);
 }
 
 @media (hover: hover) {
