@@ -7,7 +7,9 @@ import IconLogo from '@/components/icons/IconLogo.vue'
   <main>
     <nav>
       <div class="leading">
-        <IconLogo class="logo content" />
+        <RouterLink to="/" class="content">
+          <IconLogo class="logo" />
+        </RouterLink>
       </div>
       <div class="body">
         <RouterLink to="/">Home</RouterLink>
@@ -51,11 +53,12 @@ nav {
 }
 
 .content {
-  margin: 15%;
+  padding: 15%;
   height: 100%;
 }
 
 .logo {
+  height: 100%;
   aspect-ratio: 1/1;
 }
 </style>
