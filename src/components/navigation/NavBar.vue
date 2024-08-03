@@ -16,7 +16,7 @@ import IconLogo from '@/components/icons/IconLogo.vue'
         <RouterLink to="/about">About</RouterLink>
       </div>
       <div class="trailing">
-        <a href="" class="content">
+        <a href="https://github.com/KessokuTeaTime" target="_blank" class="content">
           <FontAwesomeIcon :icon="['fab', 'github']" class="icon" />
         </a>
       </div>
@@ -77,6 +77,12 @@ nav {
 }
 
 a {
-  color: var(--color-text);
+  --color-link: var(--color-text);
+  --color-link-soft: var(--color-border-hover);
+  --color-link-mute: var(--color-border);
+
+  &:has(.icon) {
+    border: transparent;
+  }
 }
 </style>

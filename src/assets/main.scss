@@ -8,20 +8,19 @@
   font-weight: normal;
 }
 
-a,
-.band-color {
+a {
   text-decoration: none;
-  color: rgb(244, 58, 148);
+  color: var(--color-link);
   transition: 0.4s;
   padding: 3px;
+
+  &:hover {
+    scale: 1.1;
+  }
 }
 
-.font-naishomoji {
-  font-family: 'Naisho Moji';
-}
-
-.font-mplus-2p {
-  font-family: 'M+ 2P';
+.tint {
+  color: var(--color-tint);
 }
 
 #logo {
@@ -33,8 +32,12 @@ a,
 }
 
 @media (hover: hover) {
-  a:hover {
-    //background-color: hsla(330, 83%, 59%, 0.2);
+  a {
+    border-bottom: 0.1em solid var(--color-link-mute);
+
+    &:hover {
+      border-bottom: 0.1em solid var(--color-link-soft);
+    }
   }
 }
 
