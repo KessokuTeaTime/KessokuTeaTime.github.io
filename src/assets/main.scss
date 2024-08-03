@@ -23,6 +23,10 @@ a {
   color: var(--color-tint);
 }
 
+::selection {
+  background: var(--color-selection);
+}
+
 #logo {
   fill: black;
 

@@ -1,7 +1,15 @@
 <template>
   <div class="about">
-    <h1 class="tint">This is an Welcome Page</h1>
-    <h1 class="tint font-mplus-2p">結束</h1>
-    <h1 class="tint font-naishomoji">バンド</h1>
+    <h1 class="tint">
+      <span class="font-mplus-2p">結束</span>
+      &nbsp;
+      <span class="font-naishomoji">バンド</span>
+    </h1>
   </div>
 </template>
+
+<style scoped>
+h1 {
+  font-size: 3rem;
+}
+</style>
