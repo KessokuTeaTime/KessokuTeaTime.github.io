@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import type { PropType } from 'vue'
+import { onMounted, ref, type PropType } from 'vue'
 
 defineProps({
   setVisible: {
     type: Function as PropType<(isVisible: boolean) => void>,
     required: true
   }
+})
+
+const opacity = ref(0)
+
+onMounted(() => {
+  setTimeout(() => {
+    opacity.value = 1
+  }, 1)
 })
 </script>
 
@@ -46,6 +54,13 @@ nav {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  opacity: v-bind(opacity);
+  transform: translateY(calc(1rem * (1 - v-bind(opacity))))
+    scaleY(calc(1 + calc(1 - v-bind(opacity)) * 0.2));
+  transition:
+    opacity 0.5s,
+    transform 0.5s cubic-bezier(0.18, 1.51, 0.64, 0.99);
 }
 
 .nav-footer {
@@ -65,9 +80,12 @@ nav {
   backdrop-filter: blur(35px) saturate(200%);
   -webkit-backdrop-filter: blur(35px) saturate(200%);
   background-color: var(--color-background-transparent);
+  opacity: v-bind(opacity);
 
   mask: var(--nav-overlay-mask);
   -webkit-mask: var(--nav-overlay-mask);
+
+  transition: opacity 0.4s;
 }
 
 button {
