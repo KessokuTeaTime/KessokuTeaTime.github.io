@@ -68,7 +68,7 @@ function toggleScreenOverlay() {
         <FontAwesomeIcon :icon="['fas', 'chevron-up']" transform="up-3 shrink-6" />
         <FontAwesomeIcon :icon="['fas', 'chevron-down']" transform="down-3 shrink-6" />
       </FontAwesomeLayers>
-      {{ currentRoute?.name || 'Unknown' }}
+      {{ currentPath === '/' ? 'Home' : currentRoute?.name || 'Unknown' }}
     </button>
 
     <div class="content">
