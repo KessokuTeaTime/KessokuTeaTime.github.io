@@ -10,13 +10,15 @@ import NavBarNarrow from './components/navigation/NavBarNarrow.vue'
     <NavBarNarrow v-else />
   </header>
 
-  <main>
+  <main id="app-container">
     <RouterView />
   </main>
 </template>
 
 <style scoped>
-main {
+#app-container {
+  padding: 2rem;
+
   @media (width >= 1024px) {
     margin-top: 4rem;
   }

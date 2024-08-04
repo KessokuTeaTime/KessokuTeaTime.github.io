@@ -20,11 +20,15 @@
 }
 
 .hero {
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 8rem - 2 * 2rem);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  @media (width < 1024px) {
+    height: calc(100vh - 2 * 2rem);
+  }
 }
 
 .spacer {

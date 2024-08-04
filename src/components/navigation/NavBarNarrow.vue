@@ -37,48 +37,46 @@ function toggleScreenOverlay() {
 </script>
 
 <template>
-  <main>
-    <NavScreenOverlay
-      v-if="isScreenOverlayEnabled"
-      :setEnabled="setScreenOverlayEnabled"
-      :isVisible="isScreenOverlayVisible"
-    >
-      <div class="nav-container">
-        <RouterLink
-          v-for="route in routes"
-          :key="route.path"
-          :to="route.path"
-          @click="toggleScreenOverlay"
-        >
-          {{ route.name }}
-        </RouterLink>
-        <div class="separator"></div>
-        <RouterLink to="/" @click="toggleScreenOverlay">Home</RouterLink>
-      </div>
-    </NavScreenOverlay>
+  <NavScreenOverlay
+    v-if="isScreenOverlayEnabled"
+    :setEnabled="setScreenOverlayEnabled"
+    :isVisible="isScreenOverlayVisible"
+  >
+    <div class="nav-container">
+      <RouterLink
+        v-for="route in routes"
+        :key="route.path"
+        :to="route.path"
+        @click="toggleScreenOverlay"
+      >
+        {{ route.name }}
+      </RouterLink>
+      <div class="separator"></div>
+      <RouterLink to="/" @click="toggleScreenOverlay">Home</RouterLink>
+    </div>
+  </NavScreenOverlay>
 
-    <nav class="blur">
-      <div class="content">
-        <RouterLink to="/" class="icon-wrapper">
-          <IconLogo class="icon" />
-        </RouterLink>
-      </div>
+  <nav class="blur">
+    <div class="content">
+      <RouterLink to="/" class="icon-wrapper">
+        <IconLogo class="icon" />
+      </RouterLink>
+    </div>
 
-      <button @click="toggleScreenOverlay" class="content">
-        <FontAwesomeLayers>
-          <FontAwesomeIcon :icon="['fas', 'chevron-up']" transform="up-3 shrink-6" />
-          <FontAwesomeIcon :icon="['fas', 'chevron-down']" transform="down-3 shrink-6" />
-        </FontAwesomeLayers>
-        {{ currentRoute?.name || 'Home' }}
-      </button>
+    <button @click="toggleScreenOverlay" class="content">
+      <FontAwesomeLayers>
+        <FontAwesomeIcon :icon="['fas', 'chevron-up']" transform="up-3 shrink-6" />
+        <FontAwesomeIcon :icon="['fas', 'chevron-down']" transform="down-3 shrink-6" />
+      </FontAwesomeLayers>
+      {{ currentRoute?.name || 'Unknown' }}
+    </button>
 
-      <div class="content">
-        <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
-          <div class="icon"><FontAwesomeIcon :icon="['fab', 'github']" /></div>
-        </a>
-      </div>
-    </nav>
-  </main>
+    <div class="content">
+      <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
+        <div class="icon"><FontAwesomeIcon :icon="['fab', 'github']" /></div>
+      </a>
+    </div>
+  </nav>
 </template>
 
 <style scoped>

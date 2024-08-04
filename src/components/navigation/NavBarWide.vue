@@ -79,58 +79,56 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main>
-    <nav class="blur">
-      <div class="content">
-        <RouterLink to="/" class="icon-wrapper scale-on-hover">
-          <IconLogo class="icon" />
-        </RouterLink>
-      </div>
+  <nav class="blur">
+    <div class="content">
+      <RouterLink to="/" class="icon-wrapper scale-on-hover">
+        <IconLogo class="icon" />
+      </RouterLink>
+    </div>
 
-      <div class="content blocks">
+    <div class="content blocks">
+      <div
+        v-for="i in ['kita', 'ryo', 'bocchi', 'nijika']"
+        :key="i"
+        :class="`tint-${i}`"
+        class="block"
+      ></div>
+    </div>
+
+    <div class="content grow" ref="container">
+      <div class="protector leading"></div>
+      <div class="content grow"></div>
+      <div class="spacer leading" ref="spacerLeading"></div>
+
+      <div class="nav-container" ref="navsContainer">
         <div
-          v-for="i in ['kita', 'ryo', 'bocchi', 'nijika']"
-          :key="i"
-          :class="`tint-${i}`"
-          class="block"
-        ></div>
-      </div>
-
-      <div class="content grow" ref="container">
-        <div class="protector leading"></div>
-        <div class="content grow"></div>
-        <div class="spacer leading" ref="spacerLeading"></div>
-
-        <div class="nav-container" ref="navsContainer">
-          <div
-            v-for="route in routes"
-            :key="route.path"
-            :data-path="route.path"
-            ref="navs"
-            class="scale-on-hover"
-          >
-            <RouterLink :to="route.path">
-              {{ route.name }}
-            </RouterLink>
-          </div>
-        </div>
-
-        <div class="spacer trailing" ref="spacerTrailing"></div>
-        <div class="content grow"></div>
-        <div class="protector trailing"></div>
-      </div>
-
-      <div class="content">
-        <a
-          href="https://github.com/KessokuTeaTime"
-          target="_blank"
-          class="icon-wrapper scale-on-hover"
+          v-for="route in routes"
+          :key="route.path"
+          :data-path="route.path"
+          ref="navs"
+          class="scale-on-hover"
         >
-          <div class="icon"><FontAwesomeIcon :icon="['fab', 'github']" /></div>
-        </a>
+          <RouterLink :to="route.path">
+            {{ route.name }}
+          </RouterLink>
+        </div>
       </div>
-    </nav>
-  </main>
+
+      <div class="spacer trailing" ref="spacerTrailing"></div>
+      <div class="content grow"></div>
+      <div class="protector trailing"></div>
+    </div>
+
+    <div class="content">
+      <a
+        href="https://github.com/KessokuTeaTime"
+        target="_blank"
+        class="icon-wrapper scale-on-hover"
+      >
+        <div class="icon"><FontAwesomeIcon :icon="['fab', 'github']" /></div>
+      </a>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
