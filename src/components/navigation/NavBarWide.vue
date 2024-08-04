@@ -10,18 +10,59 @@ type Route = {
 }
 
 const navs = ref<HTMLElement[]>([])
-const protectorLeading = ref<HTMLElement | null>(null)
-const protectorTrailing = ref<HTMLElement | null>(null)
+const container = ref<HTMLElement | null>(null)
+const navsContainer = ref<HTMLElement | null>(null)
 const spacerLeading = ref<HTMLElement | null>(null)
 const spacerTrailing = ref<HTMLElement | null>(null)
 
 const route = useRoute()
 const currentPath = computed(() => route.path)
-const currentRoute = computed(() => {
-  return routes.find((route) => route.path === currentPath.value)
-})
 const currentNav = computed(() => {
   return findNav(currentPath.value)
+})
+
+const protectorLeadingEdge = computed(() => {
+  return container.value?.getBoundingClientRect().left || 0
+})
+const protectorTrailingEdge = computed(() => {
+  return container.value?.getBoundingClientRect().right || 0
+})
+const protectorDifference = computed(() => {
+  let trailing = window.innerWidth - protectorTrailingEdge.value
+  let leading = protectorLeadingEdge.value
+  return trailing - leading
+})
+
+const protectorLeadingWidth = computed(() => {
+  return Math.max(0, protectorDifference.value)
+})
+const protectorTrailingWidth = computed(() => {
+  return Math.max(0, -protectorDifference.value)
+})
+
+const navsWidth = computed(() => {
+  return navsContainer.value?.getBoundingClientRect().width || 0
+})
+
+const currentNavOffset = computed(() => {
+  if (currentPath.value === '/') {
+    return navsWidth.value / 2
+  } else if (currentNav.value && navsContainer.value) {
+    return (
+      currentNav.value.getBoundingClientRect().left +
+      currentNav.value.getBoundingClientRect().width / 2 -
+      navsContainer.value.getBoundingClientRect().left
+    )
+  } else {
+    return 0
+  }
+})
+
+const spacerLeadingWidth = computed(() => {
+  return navsWidth.value / 2 - currentNavOffset.value
+})
+const spacerTrailingWidth = computed(() => {
+  return currentNavOffset.value - navsWidth.value / 2
 })
 
 const routes: Route[] = [
@@ -58,25 +99,27 @@ function findNav(path: string): HTMLElement | undefined {
         ></div>
       </div>
 
-      <div class="protector leading" ref="protectorLeading"></div>
-      <div class="spacer leading" ref="spacerLeading"></div>
+      <div class="content grow" ref="container">
+        <div class="protector leading"></div>
+        <div class="spacer leading" ref="spacerLeading"></div>
 
-      <div class="body">
-        <div
-          v-for="route in routes"
-          :key="route.path"
-          :data-path="route.path"
-          ref="navs"
-          class="link"
-        >
-          <RouterLink :to="route.path">
-            {{ route.name }}
-          </RouterLink>
+        <div class="navs-container" ref="navsContainer">
+          <div
+            v-for="route in routes"
+            :key="route.path"
+            :data-path="route.path"
+            ref="navs"
+            class="link"
+          >
+            <RouterLink :to="route.path">
+              {{ route.name }}
+            </RouterLink>
+          </div>
         </div>
-      </div>
 
-      <div class="spacer trailing" ref="spacerTrailing"></div>
-      <div class="protector trailing" ref="protectorTrailing"></div>
+        <div class="spacer trailing" ref="spacerTrailing"></div>
+        <div class="protector trailing"></div>
+      </div>
 
       <div class="content">
         <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
@@ -123,14 +166,13 @@ a {
 
 .spacer {
   height: 100%;
-  background: red;
 
   &.leading {
-    width: 0;
+    width: calc(v-bind(spacerLeadingWidth) * 1px);
   }
 
   &.trailing {
-    width: 0;
+    width: calc(v-bind(spacerTrailingWidth) * 1px);
   }
 
   transition: width 0.4s;
@@ -138,26 +180,36 @@ a {
 
 .protector {
   height: 100%;
-  flex-grow: 1;
-  background: blue;
+
+  &.leading {
+    width: calc(v-bind(protectorLeadingWidth) * 1px);
+  }
+
+  &.trailing {
+    width: calc(v-bind(protectorTrailingWidth) * 1px);
+  }
 }
 
-.body {
+.navs-container {
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
 
   > * {
-    margin: 0 1rem;
+    padding: 0 1rem;
   }
 }
 
 .content {
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+
+  &.grow {
+    flex-grow: 1;
+  }
 }
 
 .icon-wrapper {
