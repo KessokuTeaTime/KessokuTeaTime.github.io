@@ -256,7 +256,7 @@ a {
   .block {
     height: 0.5rem;
     aspect-ratio: 1/0.25;
-    background-color: var(--color);
+    background-color: var(--tint);
   }
 }
 

@@ -22,28 +22,28 @@ button {
 }
 
 .tint {
-  --color: var(--color-tint);
-  color: var(--color);
+  --tint: var(--color-tint);
+  color: var(--tint);
 }
 
 .tint-kita {
-  --color: var(--color-tint-red);
-  color: var(--color);
+  --tint: var(--color-tint-red);
+  color: var(--tint);
 }
 
 .tint-ryo {
-  --color: var(--color-tint-blue);
-  color: var(--color);
+  --tint: var(--color-tint-blue);
+  color: var(--tint);
 }
 
 .tint-bocchi {
-  --color: var(--color-tint-pink);
-  color: var(--color);
+  --tint: var(--color-tint-pink);
+  color: var(--tint);
 }
 
 .tint-nijika {
-  --color: var(--color-tint-yellow);
-  color: var(--color);
+  --tint: var(--color-tint-yellow);
+  color: var(--tint);
 }
 
 ::selection {

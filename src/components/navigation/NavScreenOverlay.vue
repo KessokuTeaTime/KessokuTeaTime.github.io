@@ -20,7 +20,16 @@ let animationCurve = computed(() =>
 </script>
 
 <template>
-  <div class="full blur"></div>
+  <div class="full blur">
+    <div class="radiant-footer">
+      <div
+        v-for="i in ['kita', 'ryo', 'bocchi', 'nijika']"
+        :key="i"
+        :class="`tint-${i}`"
+        class="radiant"
+      ></div>
+    </div>
+  </div>
   <nav class="full">
     <div class="nav-content">
       <slot></slot>
@@ -102,5 +111,26 @@ button {
   transition:
     scale 0.4s,
     opacity 0.4s;
+}
+
+.radiant-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+
+  .radiant {
+    flex-grow: 1;
+    height: 0.5rem;
+    background-color: var(--tint);
+    opacity: v-bind(opacity);
+    filter: blur(calc(v-bind(opacity) * 10vw));
+
+    transition:
+      opacity 0.3s ease-out,
+      filter 0.3s ease-out;
+  }
 }
 </style>
