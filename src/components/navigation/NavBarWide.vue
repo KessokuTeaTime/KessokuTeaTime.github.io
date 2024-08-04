@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router'
+import { routes } from '@/router'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
-
-type Route = {
-  name: string
-  path: string
-}
 
 const navs = ref<HTMLElement[]>([])
 const container = ref<HTMLElement | null>(null)
@@ -66,17 +62,6 @@ const spacerTrailingWidth = computed(() => {
   return Math.max(0, (currentNavOffset.value - navsWidth.value / 2) * 2)
 })
 
-const routes: Route[] = [
-  {
-    name: 'About',
-    path: '/about'
-  },
-  {
-    name: 'Projects',
-    path: '/projects'
-  }
-]
-
 function findNav(path: string): HTMLElement | undefined {
   return navs.value.find((nav) => nav.dataset.path === path)
 }
@@ -97,7 +82,7 @@ onUnmounted(() => {
   <main>
     <nav class="blur">
       <div class="content">
-        <RouterLink to="/" class="icon-wrapper content">
+        <RouterLink to="/" class="icon-wrapper scale-on-hover">
           <IconLogo class="icon" />
         </RouterLink>
       </div>
@@ -122,7 +107,7 @@ onUnmounted(() => {
             :key="route.path"
             :data-path="route.path"
             ref="navs"
-            class="link"
+            class="scale-on-hover"
           >
             <RouterLink :to="route.path">
               {{ route.name }}
@@ -136,7 +121,11 @@ onUnmounted(() => {
       </div>
 
       <div class="content">
-        <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
+        <a
+          href="https://github.com/KessokuTeaTime"
+          target="_blank"
+          class="icon-wrapper scale-on-hover"
+        >
           <div class="icon"><FontAwesomeIcon :icon="['fab', 'github']" /></div>
         </a>
       </div>
@@ -265,7 +254,7 @@ a {
   }
 }
 
-.link {
+.scale-on-hover {
   transition: scale 0.4s;
 
   &:hover {

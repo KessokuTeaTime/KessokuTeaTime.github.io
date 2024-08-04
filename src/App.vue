@@ -17,6 +17,12 @@ import NavBarNarrow from './components/navigation/NavBarNarrow.vue'
 
 <style scoped>
 main {
-  margin-top: 4rem;
+  @media (width >= 1024px) {
+    margin-top: 4rem;
+  }
+
+  @media (width < 1024px) {
+    margin-bottom: 4rem;
+  }
 }
 </style>

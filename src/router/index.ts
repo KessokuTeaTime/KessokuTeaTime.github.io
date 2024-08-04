@@ -31,3 +31,19 @@ const router = createRouter({
 })
 
 export default router
+
+export type Route = {
+  name: string
+  path: string
+}
+
+export const routes: Route[] = [
+  {
+    name: 'About',
+    path: '/about'
+  },
+  {
+    name: 'Projects',
+    path: '/projects'
+  }
+]
