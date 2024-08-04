@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, useRoute, type _RouterLinkI } from 'vue-router'
-import { computed, onMounted, ref, type ComponentPublicInstance, type ComputedRef } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
 
@@ -48,11 +48,6 @@ const currentNavOffset = computed(() => {
   if (currentPath.value === '/') {
     return navsWidth.value / 2
   } else if (currentNav.value && navsContainer.value) {
-    console.log(
-      currentNav.value.offsetLeft,
-      currentNav.value.offsetWidth,
-      navsContainer.value.offsetLeft
-    )
     return (
       currentNav.value.offsetLeft +
       currentNav.value.offsetWidth / 2 -
