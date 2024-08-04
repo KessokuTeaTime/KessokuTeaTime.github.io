@@ -66,10 +66,13 @@ nav {
   align-items: center;
 
   opacity: v-bind(opacity);
+  filter: blur(calc((1 - v-bind(opacity)) * 1rem));
   transform: translateY(calc(1rem * (1 - v-bind(opacity))))
     scaleY(calc(1 + calc(1 - v-bind(opacity)) * 0.2));
+
   transition:
     opacity 0.4s,
+    filter 0.4s,
     transform 0.4s v-bind(animationCurve);
 }
 
@@ -79,6 +82,10 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  filter: blur(calc((1 - v-bind(opacity)) * 1rem));
+
+  transition: filter 0.4s;
 }
 
 .blur {
@@ -123,10 +130,10 @@ button {
 
   .radiant {
     flex-grow: 1;
-    height: 0.5rem;
+    height: 0.75rem;
     background-color: var(--tint);
     opacity: v-bind(opacity);
-    filter: blur(calc(v-bind(opacity) * 10vw));
+    filter: blur(calc(v-bind(opacity) * 5vw));
 
     transition:
       opacity 0.3s ease-out,

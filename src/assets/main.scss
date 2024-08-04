@@ -4,7 +4,6 @@
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   font-weight: normal;
 }
 
@@ -29,21 +28,41 @@ button {
 .tint-kita {
   --tint: var(--color-tint-red);
   color: var(--tint);
+
+  &::selection,
+  *::selection {
+    background: var(--color-tint-red-mute);
+  }
 }
 
 .tint-ryo {
   --tint: var(--color-tint-blue);
   color: var(--tint);
+
+  &::selection,
+  *::selection {
+    background: var(--color-tint-blue-mute);
+  }
 }
 
 .tint-bocchi {
   --tint: var(--color-tint-pink);
   color: var(--tint);
+
+  &::selection,
+  *::selection {
+    background: var(--color-tint-pink-mute);
+  }
 }
 
 .tint-nijika {
   --tint: var(--color-tint-yellow);
   color: var(--tint);
+
+  &::selection,
+  *::selection {
+    background: var(--color-tint-yellow-mute);
+  }
 }
 
 ::selection {
@@ -68,7 +87,7 @@ button {
   }
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   body {
     display: flex;
     place-items: center;
