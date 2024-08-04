@@ -93,8 +93,6 @@ button {
   width: 100%;
   height: 100%;
 
-  background: transparent;
-  border: none;
   opacity: v-bind(opacity);
 
   &:hover {

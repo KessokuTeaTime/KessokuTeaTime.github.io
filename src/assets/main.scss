@@ -15,6 +15,12 @@ a {
   padding: 3px;
 }
 
+button {
+  color: var(--color-text);
+  background: transparent;
+  border: none;
+}
+
 .tint {
   --color: var(--color-tint);
   color: var(--color);

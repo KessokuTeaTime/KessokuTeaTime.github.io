@@ -190,9 +190,6 @@ a {
 button {
   font-size: 1.2rem;
 
-  background: transparent;
-  border: none;
-
   &:hover {
     scale: 0.9;
   }
