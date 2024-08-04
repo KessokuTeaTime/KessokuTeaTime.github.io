@@ -50,7 +50,7 @@ const currentNavOffset = computed(() => {
       navsContainer.value.offsetLeft
     )
   } else {
-    return 0
+    return navsWidth.value / 2
   }
 })
 
