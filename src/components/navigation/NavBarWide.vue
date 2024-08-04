@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import IconLogo from '@/components/icons/IconLogo.vue'
 
@@ -80,6 +80,17 @@ const routes: Route[] = [
 function findNav(path: string): HTMLElement | undefined {
   return navs.value.find((nav) => nav.dataset.path === path)
 }
+
+const windowScrollY = ref(0)
+function updateWindowScrollY() {
+  windowScrollY.value = window.scrollY
+}
+onMounted(() => {
+  window.addEventListener('scroll', updateWindowScrollY)
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateWindowScrollY)
+})
 </script>
 
 <template>
@@ -156,7 +167,9 @@ nav {
   backdrop-filter: blur(35px) saturate(200%);
   -webkit-backdrop-filter: blur(35px) saturate(200%);
   background-color: var(--color-background-transparent);
-  border: 2px solid var(--color-border);
+  border-bottom: calc(min(1, v-bind(windowScrollY)) * 2px) solid var(--color-border);
+
+  transition: border 0.4s;
 }
 
 a {
