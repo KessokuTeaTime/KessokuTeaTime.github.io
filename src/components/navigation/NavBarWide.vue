@@ -101,7 +101,7 @@ onUnmounted(() => {
         <div class="content grow"></div>
         <div class="spacer leading" ref="spacerLeading"></div>
 
-        <div class="navs-container" ref="navsContainer">
+        <div class="nav-container" ref="navsContainer">
           <div
             v-for="route in routes"
             :key="route.path"
@@ -202,7 +202,7 @@ a {
   }
 }
 
-.navs-container {
+.nav-container {
   height: 100%;
   display: flex;
   justify-content: center;
@@ -227,11 +227,17 @@ a {
 .icon-wrapper {
   padding: 0.5rem;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .icon {
     height: 100%;
     aspect-ratio: 1/1;
     padding: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     > * {
       height: 100%;

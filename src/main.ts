@@ -7,9 +7,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronUp, faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faGithub, faChevronUp, faChevronDown)
+library.add(faGithub, faChevronUp, faChevronDown, faXmark)
 
 import { createApp } from 'vue'
 import App from './App.vue'
