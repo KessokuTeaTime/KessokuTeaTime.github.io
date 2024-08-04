@@ -11,21 +11,39 @@ const currentPath = computed(() => route.path)
 const currentRoute = computed(() => routes.find((r) => r.path === currentPath.value))
 
 const isScreenOverlayVisible = ref(false)
+const isScreenOverlayEnabled = ref(false)
+let screenOverlayTimeout: number | undefined
 
-function setScreenOverlayVisible(isVisible: boolean) {
-  isScreenOverlayVisible.value = isVisible
+function setScreenOverlayEnabled(isEnabled: boolean) {
+  if (isEnabled) {
+    clearTimeout(screenOverlayTimeout)
+
+    isScreenOverlayEnabled.value = isEnabled
+    screenOverlayTimeout = setTimeout(() => {
+      isScreenOverlayVisible.value = isEnabled
+    }, 1)
+  } else {
+    clearTimeout(screenOverlayTimeout)
+
+    isScreenOverlayVisible.value = isEnabled
+    screenOverlayTimeout = setTimeout(() => {
+      isScreenOverlayEnabled.value = isEnabled
+    }, 500)
+  }
 }
 function toggleScreenOverlay() {
-  setScreenOverlayVisible(!isScreenOverlayVisible.value)
+  setScreenOverlayEnabled(!isScreenOverlayVisible.value)
 }
 </script>
 
 <template>
   <main>
-    <NavScreenOverlay v-if="isScreenOverlayVisible" :set-visible="setScreenOverlayVisible">
+    <NavScreenOverlay
+      v-if="isScreenOverlayEnabled"
+      :setEnabled="setScreenOverlayEnabled"
+      :isVisible="isScreenOverlayVisible"
+    >
       <div class="nav-container">
-        <RouterLink to="/" @click="toggleScreenOverlay">Home</RouterLink>
-        <div class="separator"></div>
         <RouterLink
           v-for="route in routes"
           :key="route.path"
@@ -34,6 +52,8 @@ function toggleScreenOverlay() {
         >
           {{ route.name }}
         </RouterLink>
+        <div class="separator"></div>
+        <RouterLink to="/" @click="toggleScreenOverlay">Home</RouterLink>
       </div>
     </NavScreenOverlay>
 
@@ -103,7 +123,7 @@ a {
 
     &:hover {
       --color-link: var(--color-text);
-      margin: 1rem 0;
+      padding-bottom: 1rem;
     }
   }
 
@@ -128,10 +148,6 @@ a {
   align-items: first baseline;
   height: 100%;
   padding: 4rem 0;
-
-  > *:last-child {
-    margin-bottom: 0 !important;
-  }
 }
 
 .content {

@@ -48,6 +48,10 @@ a {
   fill: var(--color-text);
 }
 
+:is(h1, h2, h3, h4, h5, h6) {
+  font-weight: bold;
+}
+
 @media (hover: hover) {
   a {
     border-bottom: 0.1em solid var(--color-link-mute);

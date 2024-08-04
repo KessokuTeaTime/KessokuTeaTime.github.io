@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { onMounted, ref, type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 
-defineProps({
-  setVisible: {
-    type: Function as PropType<(isVisible: boolean) => void>,
+const props = defineProps({
+  setEnabled: {
+    type: Function as PropType<(isEnabled: boolean) => void>,
+    required: true
+  },
+  isVisible: {
+    type: Boolean,
     required: true
   }
 })
 
-const opacity = ref(0)
-
-onMounted(() => {
-  setTimeout(() => {
-    opacity.value = 1
-  }, 1)
-})
+let opacity = computed(() => (props.isVisible ? 1 : 0))
+let animationCurve = computed(() =>
+  props.isVisible ? 'cubic-bezier(0.18, 1.51, 0.64, 0.99)' : 'ease-in-out'
+)
 </script>
 
 <template>
@@ -25,7 +26,7 @@ onMounted(() => {
       <slot></slot>
     </div>
     <div class="nav-footer">
-      <button @click="setVisible(false)" class="icon">
+      <button @click="setEnabled(false)">
         <FontAwesomeIcon :icon="['fas', 'xmark']" size="2x" />
       </button>
     </div>
@@ -59,8 +60,8 @@ nav {
   transform: translateY(calc(1rem * (1 - v-bind(opacity))))
     scaleY(calc(1 + calc(1 - v-bind(opacity)) * 0.2));
   transition:
-    opacity 0.5s,
-    transform 0.5s cubic-bezier(0.18, 1.51, 0.64, 0.99);
+    opacity 0.4s,
+    transform 0.4s v-bind(animationCurve);
 }
 
 .nav-footer {
@@ -72,7 +73,7 @@ nav {
 }
 
 .blur {
-  --nav-overlay-mask: linear-gradient(to bottom, transparent, black 25%);
+  --nav-overlay-mask: linear-gradient(to bottom, transparent, black 50%);
 
   height: 100%;
   width: 100%;
@@ -85,22 +86,23 @@ nav {
   mask: var(--nav-overlay-mask);
   -webkit-mask: var(--nav-overlay-mask);
 
-  transition: opacity 0.4s;
+  transition: opacity 0.3s ease-out;
 }
 
 button {
+  width: 100%;
+  height: 100%;
+
   background: transparent;
   border: none;
+  opacity: v-bind(opacity);
 
   &:hover {
-    scale: 1.1;
+    scale: 1.25;
   }
 
-  transition: scale 0.4s;
-}
-
-.icon {
-  height: 100%;
-  aspect-ratio: 1/1;
+  transition:
+    scale 0.4s,
+    opacity 0.4s;
 }
 </style>

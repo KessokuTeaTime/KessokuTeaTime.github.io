@@ -24,7 +24,7 @@ h1 {
 
 .ceilling {
   width: 100%;
-  height: 200vh;
+  height: 20vh;
 }
 
 .spacer {
