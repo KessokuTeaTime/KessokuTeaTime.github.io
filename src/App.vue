@@ -6,7 +6,7 @@ import NavBarNarrow from './components/navigation/NavBarNarrow.vue'
 
 <template>
   <header>
-    <NavBarWide v-if="$screen.width > 1024" />
+    <NavBarWide v-if="$screen.width >= 1024" />
     <NavBarNarrow v-else />
   </header>
 

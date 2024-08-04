@@ -22,10 +22,10 @@ const currentNav = computed(() => {
 })
 
 const protectorLeadingEdge = computed(() => {
-  return container.value?.getBoundingClientRect().left || 0
+  return container.value?.offsetLeft || 0
 })
 const protectorTrailingEdge = computed(() => {
-  return container.value?.getBoundingClientRect().right || 0
+  return (container.value?.offsetLeft || 0) + (container.value?.offsetWidth || 0)
 })
 const protectorDifference = computed(() => {
   let trailing = window.innerWidth - protectorTrailingEdge.value
@@ -41,28 +41,34 @@ const protectorTrailingWidth = computed(() => {
 })
 
 const navsWidth = computed(() => {
-  return navsContainer.value?.getBoundingClientRect().width || 0
+  return navsContainer.value?.offsetWidth || 0
 })
 
 const currentNavOffset = computed(() => {
   if (currentPath.value === '/') {
     return navsWidth.value / 2
   } else if (currentNav.value && navsContainer.value) {
+    console.log(
+      currentNav.value.offsetLeft,
+      currentNav.value.offsetWidth,
+      navsContainer.value.offsetLeft
+    )
     return (
-      currentNav.value.getBoundingClientRect().left +
-      currentNav.value.getBoundingClientRect().width / 2 -
-      navsContainer.value.getBoundingClientRect().left
+      currentNav.value.offsetLeft +
+      currentNav.value.offsetWidth / 2 -
+      navsContainer.value.offsetLeft
     )
   } else {
     return 0
   }
 })
 
+// Double the width of the spacer to make it appear centered
 const spacerLeadingWidth = computed(() => {
-  return navsWidth.value / 2 - currentNavOffset.value
+  return Math.max(0, (navsWidth.value / 2 - currentNavOffset.value) * 2)
 })
 const spacerTrailingWidth = computed(() => {
-  return currentNavOffset.value - navsWidth.value / 2
+  return Math.max(0, (currentNavOffset.value - navsWidth.value / 2) * 2)
 })
 
 const routes: Route[] = [
@@ -83,7 +89,7 @@ function findNav(path: string): HTMLElement | undefined {
 
 <template>
   <main>
-    <nav>
+    <nav class="blur">
       <div class="content">
         <RouterLink to="/" class="icon-wrapper content">
           <IconLogo class="icon" />
@@ -101,6 +107,7 @@ function findNav(path: string): HTMLElement | undefined {
 
       <div class="content grow" ref="container">
         <div class="protector leading"></div>
+        <div class="content grow"></div>
         <div class="spacer leading" ref="spacerLeading"></div>
 
         <div class="navs-container" ref="navsContainer">
@@ -118,6 +125,7 @@ function findNav(path: string): HTMLElement | undefined {
         </div>
 
         <div class="spacer trailing" ref="spacerTrailing"></div>
+        <div class="content grow"></div>
         <div class="protector trailing"></div>
       </div>
 
@@ -147,6 +155,13 @@ nav {
     font-family: 'Space Grotesk';
     font-weight: 500;
   }
+}
+
+.blur {
+  backdrop-filter: blur(35px) saturate(200%);
+  -webkit-backdrop-filter: blur(35px) saturate(200%);
+  background-color: var(--color-background-transparent);
+  border: 2px solid var(--color-border);
 }
 
 a {
