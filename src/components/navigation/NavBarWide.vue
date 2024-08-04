@@ -10,6 +10,8 @@ type Route = {
 }
 
 const navs = ref<HTMLElement[]>([])
+const protectorLeading = ref<HTMLElement | null>(null)
+const protectorTrailing = ref<HTMLElement | null>(null)
 const spacerLeading = ref<HTMLElement | null>(null)
 const spacerTrailing = ref<HTMLElement | null>(null)
 
@@ -21,67 +23,6 @@ const currentRoute = computed(() => {
 const currentNav = computed(() => {
   return findNav(currentPath.value)
 })
-
-const availableWidth = computed(() => {
-  if (spacerLeading.value && spacerTrailing.value) {
-    return (
-      spacerTrailing.value?.getBoundingClientRect().right -
-      spacerLeading.value?.getBoundingClientRect().left
-    )
-  } else {
-    return 0
-  }
-})
-
-const adjustableWidth = computed(() => {
-  if (spacerLeading.value && spacerTrailing.value) {
-    return spacerLeading.value.offsetWidth + spacerTrailing.value.offsetWidth
-  } else {
-    return 0
-  }
-})
-
-const difference = computed(() => {
-  if (spacerLeading.value && spacerTrailing.value) {
-    return (
-      screen.width -
-      spacerTrailing.value.getBoundingClientRect().right -
-      spacerLeading.value.getBoundingClientRect().left
-    )
-  } else {
-    return 0
-  }
-})
-
-const leadingOffset = computed(() => {
-  if (spacerLeading.value && spacerTrailing.value && currentNav.value) {
-    let min = 0
-    let max = adjustableWidth.value
-
-    var offset = 0
-    for (let r of routes) {
-      if (r.path === currentPath.value) {
-        offset += currentNav.value.offsetWidth / 2
-        break
-      } else {
-        let nav = findNav(r.path)
-        if (nav) {
-          offset += nav.offsetWidth
-          console.log(r.path, nav.offsetWidth, offset)
-        }
-      }
-    }
-
-    return Math.max(min, Math.min(max, adjustableWidth.value / 2 + offset + difference.value))
-  } else {
-    return 0
-  }
-})
-
-setInterval(() => {
-  console.log(currentRoute.value)
-  console.log(currentNav.value)
-}, 1000)
 
 const routes: Route[] = [
   {
@@ -117,6 +58,7 @@ function findNav(path: string): HTMLElement | undefined {
         ></div>
       </div>
 
+      <div class="protector leading" ref="protectorLeading"></div>
       <div class="spacer leading" ref="spacerLeading"></div>
 
       <div class="body">
@@ -134,6 +76,7 @@ function findNav(path: string): HTMLElement | undefined {
       </div>
 
       <div class="spacer trailing" ref="spacerTrailing"></div>
+      <div class="protector trailing" ref="protectorTrailing"></div>
 
       <div class="content">
         <a href="https://github.com/KessokuTeaTime" target="_blank" class="icon-wrapper">
@@ -171,20 +114,32 @@ a {
   &.icon-wrapper {
     border: transparent;
   }
+
+  &.router-link-active {
+    --color-link-soft: var(--color-link);
+    --color-link-mute: var(--color-link);
+  }
 }
 
 .spacer {
   height: 100%;
-  flex-grow: 1;
   background: red;
 
   &.leading {
-    width: v-bind(leadingOffset);
+    width: 0;
   }
 
   &.trailing {
-    width: calc(v-bind(adjustableWidth) - v-bind(leadingOffset));
+    width: 0;
   }
+
+  transition: width 0.4s;
+}
+
+.protector {
+  height: 100%;
+  flex-grow: 1;
+  background: blue;
 }
 
 .body {
