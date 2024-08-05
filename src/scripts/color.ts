@@ -58,7 +58,39 @@ export class Color {
     return new Color(r, g, b, a)
   }
 
-  public toCss(): string {
+  public static fromString(str: string): Color {
+    const hasAlpha = str.startsWith('rgba')
+    const parts = str.replace(/.+\(/, '').replace(/\).+/, '').split(',')
+
+    const r = parseInt(parts[0])
+    const g = parseInt(parts[1])
+    const b = parseInt(parts[2])
+    if (hasAlpha) {
+      const a = parseFloat(parts[3])
+      return new Color(r, g, b, a)
+    } else {
+      return new Color(r, g, b)
+    }
+  }
+
+  normalize(): Color {
+    if (this.isNamed()) {
+      const cssVar = getComputedStyle(document.documentElement).getPropertyValue(this.toNamedCss()!)
+      if (cssVar) {
+        return Color.fromString(cssVar)
+      } else {
+        return this
+      }
+    } else {
+      return this
+    }
+  }
+
+  public toRGBA(): string {
+    return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`
+  }
+
+  public toNamedCss(): string | undefined {
     if (this.isNamed()) {
       const prefix = '--color-tint'
       const suffix = this.opacity ? `${this.opacity}` : undefined
@@ -69,10 +101,14 @@ export class Color {
         css = `${prefix}-${this.name}`
       }
 
-      return `var(${css})`
+      return css
     } else {
-      return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`
+      return undefined
     }
+  }
+
+  public toCss(): string {
+    return this.normalize().toRGBA()
   }
 
   public isNamed(): boolean {

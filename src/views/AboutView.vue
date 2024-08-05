@@ -17,3 +17,9 @@ import CardMember from '@/components/cards/CardMember.vue'
   padding: 2rem;
 }
 </style>
+
+<style>
+#app {
+  background: url('https://picsum.photos/512');
+}
+</style>
