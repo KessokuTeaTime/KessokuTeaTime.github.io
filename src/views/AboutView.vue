@@ -4,7 +4,18 @@ import CardMember from '@/components/cards/CardMember.vue'
 
 <template>
   <div class="card-container">
-    <CardMember />
+    <CardMember
+      :links="[
+        { name: 'GitHub', url: 'https://github.com', faIcon: ['fab', 'github'] },
+        { name: 'Test', url: 'https://google.com' }
+      ]"
+    >
+      <template v-slot:name>Member</template>
+      <template v-slot:description>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna officia cupidatat enim anim
+        ea adipisicing deserunt.
+      </template>
+    </CardMember>
   </div>
 </template>
 

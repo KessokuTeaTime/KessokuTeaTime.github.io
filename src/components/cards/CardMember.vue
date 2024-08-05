@@ -6,18 +6,19 @@ import { computed, type PropType } from 'vue'
 const props = defineProps({
   avatar: {
     type: String,
-    default: 'default'
+    default: ''
   },
   color: {
     type: Color,
     default: Color.pink
   },
   links: {
-    type: Array as PropType<{ name: string; url: string; faIcon: string[] | undefined }[]>,
-    default: () => [
-      { name: 'GitHub', url: 'https://github.com', faIcon: ['fab', 'github'] },
-      { name: 'Test', url: 'https://google.com' }
-    ]
+    type: Array as PropType<{ name: string; url: string; faIcon?: string[] | undefined }[]>,
+    default: () => []
+  },
+  tags: {
+    type: Array as PropType<string[]>,
+    default: () => []
   }
 })
 
@@ -41,7 +42,7 @@ const tintSelection = computed(() => {
       <img class="avatar" :src="avatar" />
       <div class="title">
         <h1 class="title-name">
-          <slot name="name"> Member </slot>
+          <slot name="name"></slot>
         </h1>
 
         <div class="decoration-tags"></div>
@@ -49,10 +50,7 @@ const tintSelection = computed(() => {
 
       <div class="subtitle">
         <div class="subtitle-description">
-          <slot name="description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna officia cupidatat enim
-            anim ea adipisicing deserunt.
-          </slot>
+          <slot name="description"> </slot>
         </div>
 
         <div class="decoration-links">
