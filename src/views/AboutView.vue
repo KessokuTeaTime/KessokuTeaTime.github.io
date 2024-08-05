@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
       ]"
       :tags="[
         'Lorem Ipsum',
-        { name: 'A Colored Tag', color: Color.fromName('yellow') },
+        { name: 'A Colored Tag', color: Color.fromName('blue') },
         '世界第一可爱'
       ]"
     >
@@ -27,6 +27,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
         <FontAwesomeIcon :icon="['fas', 'chevron-up']" />
       </template>
     </CardMember>
+
+    <CardMember
+      avatar="https://github.com/KrLite.png"
+      :color="Color.pink"
+      :links="[{ name: 'GitHub', url: 'https://github.com/KrLite', faIcon: ['fab', 'github'] }]"
+      :tags="['世界第一可爱']"
+    >
+      <template #name>KrLite</template>
+      <template #description>坚守此岸。</template>
+    </CardMember>
   </div>
 </template>
 
@@ -37,6 +47,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   justify-content: center;
   align-items: center;
   padding: 2rem;
+  gap: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   background: url('https://picsum.photos/512');
 }
