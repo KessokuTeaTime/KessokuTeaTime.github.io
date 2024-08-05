@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import CardMember from '@/components/cards/CardMember.vue'
+import { Color } from '@/scripts/color'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 </script>
 
 <template>
@@ -9,11 +11,20 @@ import CardMember from '@/components/cards/CardMember.vue'
         { name: 'GitHub', url: 'https://github.com', faIcon: ['fab', 'github'] },
         { name: 'Test', url: 'https://google.com' }
       ]"
+      :tags="[
+        'Lorem Ipsum',
+        { name: 'A Colored Tag', color: Color.fromName('yellow') },
+        '世界第一可爱'
+      ]"
     >
-      <template v-slot:name>Member</template>
-      <template v-slot:description>
+      <template #name>Member</template>
+      <template #description>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna officia cupidatat enim anim
         ea adipisicing deserunt.
+      </template>
+
+      <template #link-icon:Test>
+        <FontAwesomeIcon :icon="['fas', 'chevron-up']" />
       </template>
     </CardMember>
   </div>
@@ -26,11 +37,7 @@ import CardMember from '@/components/cards/CardMember.vue'
   justify-content: center;
   align-items: center;
   padding: 2rem;
-}
-</style>
 
-<style>
-#app {
   background: url('https://picsum.photos/512');
 }
 </style>

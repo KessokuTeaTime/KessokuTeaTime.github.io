@@ -17,7 +17,7 @@ const props = defineProps({
     default: () => []
   },
   tags: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<(string | { name: string; color: Color })[]>,
     default: () => []
   }
 })
@@ -50,14 +50,14 @@ const tintSelection = computed(() => {
 
       <div class="subtitle">
         <div class="subtitle-description">
-          <slot name="description"> </slot>
+          <slot name="description"></slot>
         </div>
 
         <div class="decoration-links">
           <div v-for="(link, index) in links" :key="index" class="link">
             <a :href="link.url" class="link-name">{{ link.name }}</a>
             <a :href="link.url" class="link-icon">
-              <slot :name="link.name.toLowerCase()">
+              <slot :name="`link-icon:${link.name}`">
                 <FontAwesomeIcon :icon="link.faIcon || ['fas', 'link']" />
               </slot>
             </a>
@@ -219,6 +219,11 @@ const tintSelection = computed(() => {
 
   .link-name {
     padding: 0.2rem 0 0 0;
+    color: var(--color-link-soft);
+
+    &:hover {
+      color: var(--color-link);
+    }
   }
 }
 </style>
