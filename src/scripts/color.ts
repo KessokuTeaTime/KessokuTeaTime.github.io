@@ -11,20 +11,20 @@ export class Color {
   public opacity: NamedOpacity | undefined = undefined
 
   public static red = this.fromName('red')
-  public static softRed = this.fromName('red', 'soft')
-  public static muteRed = this.fromName('red', 'mute')
+  public static redSoft = this.fromName('red', 'soft')
+  public static redMute = this.fromName('red', 'mute')
 
   public static blue = this.fromName('blue')
-  public static softBlue = this.fromName('blue', 'soft')
-  public static muteBlue = this.fromName('blue', 'mute')
+  public static blueSoft = this.fromName('blue', 'soft')
+  public static blueMute = this.fromName('blue', 'mute')
 
   public static pink = this.fromName('pink')
-  public static softPink = this.fromName('pink', 'soft')
-  public static mutePink = this.fromName('pink', 'mute')
+  public static pinkSoft = this.fromName('pink', 'soft')
+  public static pinkMute = this.fromName('pink', 'mute')
 
   public static yellow = this.fromName('yellow')
-  public static softYellow = this.fromName('yellow', 'soft')
-  public static muteYellow = this.fromName('yellow', 'mute')
+  public static yellowSoft = this.fromName('yellow', 'soft')
+  public static yellowMute = this.fromName('yellow', 'mute')
 
   constructor(
     r: number,

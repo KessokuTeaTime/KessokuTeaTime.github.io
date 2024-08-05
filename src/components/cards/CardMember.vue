@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Color } from '@/scripts/color'
-import { computed } from 'vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { computed, type PropType } from 'vue'
 
 const props = defineProps({
   avatar: {
@@ -9,12 +10,25 @@ const props = defineProps({
   },
   color: {
     type: Color,
-    default: Color.blue
+    default: Color.pink
+  },
+  links: {
+    type: Array as PropType<{ name: string; url: string; faIcon: string[] | undefined }[]>,
+    default: () => [
+      { name: 'GitHub', url: 'https://github.com', faIcon: ['fab', 'github'] },
+      { name: 'Test', url: 'https://google.com' }
+    ]
   }
 })
 
 const tint = computed(() => {
   return props.color.normalize().withAlpha(1).toCss()
+})
+const tintSoft = computed(() => {
+  return props.color.normalize().withAlpha(0.5).toCss()
+})
+const tintMute = computed(() => {
+  return props.color.normalize().withAlpha(0.2).toCss()
 })
 const tintSelection = computed(() => {
   return props.color.normalize().withAlpha(0.1).toCss()
@@ -26,14 +40,32 @@ const tintSelection = computed(() => {
     <div class="header">
       <img class="avatar" :src="avatar" />
       <div class="title">
-        <h1 class="name">
-          <slot name="title"> Member </slot>
+        <h1 class="title-name">
+          <slot name="name"> Member </slot>
         </h1>
-        <div class="description">
-          <slot name="description"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. </slot>
+
+        <div class="decoration-tags"></div>
+      </div>
+
+      <div class="subtitle">
+        <div class="subtitle-description">
+          <slot name="description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna officia cupidatat enim
+            anim ea adipisicing deserunt.
+          </slot>
+        </div>
+
+        <div class="decoration-links">
+          <div v-for="(link, index) in links" :key="index" class="link">
+            <a :href="link.url" class="link-name">{{ link.name }}</a>
+            <a :href="link.url" class="link-icon">
+              <slot :name="link.name.toLowerCase()">
+                <FontAwesomeIcon :icon="link.faIcon || ['fas', 'link']" />
+              </slot>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="decoration"></div>
     </div>
     <div class="footer blur">
       <div class="body"></div>
@@ -52,7 +84,12 @@ const tintSelection = computed(() => {
   border-radius: 8px;
 
   background: var(--color-background-mute);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-background-soft);
+
+  --color-link: v-bind(tint);
+  --color-link-soft: v-bind(tintSoft);
+  --color-link-mute: v-bind(tintMute);
+  --color-selection: v-bind(tintSelection);
 
   display: grid;
   grid-template-areas:
@@ -65,22 +102,20 @@ const tintSelection = computed(() => {
 
   transition: scale 0.4s;
   overflow: scroll;
-
-  &::selection,
-  *::selection {
-    background: v-bind(tintSelection);
-  }
 }
 
 .header {
   grid-area: header;
 
   padding: 1rem;
-  gap: 1rem;
+  column-gap: 1rem;
 
   display: grid;
-  grid-template-areas: 'avatar title deco';
-  grid-template-columns: 5rem 1fr auto;
+  grid-template-areas:
+    'avatar title   '
+    'avatar subtitle';
+  grid-template-columns: 5rem 1fr;
+  grid-template-rows: 0.618fr 0.382fr;
 
   .avatar {
     grid-area: avatar;
@@ -98,12 +133,10 @@ const tintSelection = computed(() => {
     grid-area: title;
 
     display: grid;
-    grid-template-areas:
-      'name'
-      'desc';
-    grid-template-rows: 0.618fr 0.382fr;
+    grid-template-areas: 'name tags';
+    grid-template-columns: 1fr auto;
 
-    .name {
+    .title-name {
       grid-area: name;
 
       display: flex;
@@ -111,21 +144,41 @@ const tintSelection = computed(() => {
       align-items: end;
     }
 
-    .description {
+    .decoration-tags {
+      grid-area: tags;
+
+      gap: 0.5rem;
+
+      display: flex;
+      justify-content: flex-end;
+      align-items: start;
+    }
+  }
+
+  .subtitle {
+    grid-area: subtitle;
+
+    display: grid;
+    grid-template-areas: 'desc links';
+    grid-template-columns: 1fr auto;
+
+    .subtitle-description {
       grid-area: desc;
 
       display: flex;
       justify-content: flex-start;
       align-items: start;
     }
-  }
 
-  .decoration {
-    grid-area: deco;
+    .decoration-links {
+      grid-area: links;
 
-    display: flex;
-    justify-content: flex-end;
-    align-items: end;
+      gap: 0.8rem;
+
+      display: flex;
+      justify-content: flex-end;
+      align-items: end;
+    }
   }
 }
 
@@ -140,6 +193,34 @@ const tintSelection = computed(() => {
 
     padding: 2rem;
     background: var(--color-background-soft);
+  }
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+
+  .link-icon {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+
+    width: 1.5rem;
+    aspect-ratio: 1/1;
+    padding: 0.2rem;
+
+    border: none;
+
+    > * {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .link-name {
+    padding: 0.2rem 0 0 0;
   }
 }
 </style>
