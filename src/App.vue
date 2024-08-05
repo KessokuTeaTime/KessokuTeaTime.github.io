@@ -17,6 +17,7 @@ import NavBarNarrow from './components/navigation/NavBarNarrow.vue'
 
 <style scoped>
 #app-container {
+  width: 100vw;
   padding: 2rem;
 
   @media (width >= 1024px) {
