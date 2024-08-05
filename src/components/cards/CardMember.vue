@@ -13,11 +13,11 @@ const props = defineProps({
     default: Color.pink
   },
   links: {
-    type: Array as PropType<{ name: string; url: string; faIcon?: string[] | undefined }[]>,
+    type: Array as PropType<{ name: string; url: string; faIcon?: string[] }[]>,
     default: () => []
   },
   tags: {
-    type: Array as PropType<(string | { name: string; color: Color })[]>,
+    type: Array as PropType<(string | { name: string; color: Color; textColor?: Color })[]>,
     default: () => []
   }
 })
@@ -45,7 +45,24 @@ const tintSelection = computed(() => {
           <slot name="name"></slot>
         </h1>
 
-        <div class="decoration-tags"></div>
+        <div class="decoration-tags">
+          <div
+            v-for="(tag, index) in tags"
+            :key="index"
+            class="tag"
+            :style="{
+              '--color-tag': typeof tag === 'object' ? tag.color.toCss() : 'var(--color-tint)',
+              '--color-tag-text':
+                typeof tag === 'object' && tag.textColor
+                  ? (tag.textColor || props.color).toCss()
+                  : 'var(--color-background)'
+            }"
+          >
+            <slot :name="`tag:${index}`">
+              {{ typeof tag === 'object' ? tag.name : tag }}
+            </slot>
+          </div>
+        </div>
       </div>
 
       <div class="subtitle">
@@ -225,5 +242,19 @@ const tintSelection = computed(() => {
       color: var(--color-link);
     }
   }
+}
+
+.tag {
+  font-size: 0.8rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: first baseline;
+
+  padding: 0.1rem 0.8rem;
+  border-radius: 0.4rem;
+
+  color: var(--color-tag-text);
+  background: var(--color-tag);
 }
 </style>
