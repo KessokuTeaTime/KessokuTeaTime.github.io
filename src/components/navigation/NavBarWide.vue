@@ -72,6 +72,7 @@ function updateWindowScrollY() {
 }
 onMounted(() => {
   window.addEventListener('scroll', updateWindowScrollY)
+  updateWindowScrollY()
 
   protectorLeadingEdge.effect.trigger()
   protectorTrailingEdge.effect.trigger()

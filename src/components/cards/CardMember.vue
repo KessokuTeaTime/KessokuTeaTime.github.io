@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Color } from '@/scripts/color'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { computed, ref, type PropType } from 'vue'
+import { computed, onMounted, onUnmounted, ref, type PropType } from 'vue'
 import SafeTeleport from '../utils/SafeTeleport.vue'
 
 const props = defineProps({
@@ -36,8 +36,50 @@ const tintSelection = computed(() => {
   return props.color.normalize().withAlpha(0.1).toCss()
 })
 
-const title = ref(null)
-const subtitle = ref(null)
+const refTitle = ref<HTMLElement | null>(null)
+const refSubtitle = ref<HTMLElement | null>(null)
+
+const refTags = ref<HTMLElement | null>(null)
+const refLinks = ref<HTMLElement | null>(null)
+
+function onMaskedScroll(event: Event) {
+  if (event.target instanceof HTMLElement) {
+    onMaskedElementScroll(event.target)
+  }
+}
+function onMaskedElementScroll(el: HTMLElement) {
+  const canScroll = el.scrollWidth > el.clientWidth
+  const width = el.scrollWidth - el.clientWidth
+  const scroll = 1 - Math.abs(el.scrollLeft / width)
+
+  const start = canScroll ? (scroll <= 0 ? 1 : 0) : 1
+  const end = canScroll ? (scroll >= 1 ? 1 : 0) : 1
+  el.style.setProperty('--mask-opacity-start', String(start))
+  el.style.setProperty('--mask-opacity-end', String(end))
+}
+
+onMounted(() => {
+  function onTagsScroll() {
+    if (refTags.value) {
+      onMaskedElementScroll(refTags.value)
+    }
+  }
+  onTagsScroll()
+  window.addEventListener('resize', onTagsScroll)
+
+  function onLinksScroll() {
+    if (refLinks.value) {
+      onMaskedElementScroll(refLinks.value)
+    }
+  }
+  onLinksScroll()
+  window.addEventListener('resize', onLinksScroll)
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', onTagsScroll)
+    window.removeEventListener('resize', onLinksScroll)
+  })
+})
 </script>
 
 <template>
@@ -45,8 +87,12 @@ const subtitle = ref(null)
     <div class="header">
       <img class="avatar" :src="avatar" />
 
-      <div class="title" ref="title">
-        <div class="decoration-tags disable-scrollbars">
+      <div class="title" ref="refTitle">
+        <div
+          class="decoration-tags disable-scrollbars overflow-scroll-mask"
+          ref="refTags"
+          @scroll="onMaskedScroll"
+        >
           <div
             v-for="(tag, index) in tags"
             :key="index"
@@ -66,14 +112,18 @@ const subtitle = ref(null)
         </div>
       </div>
 
-      <div class="subtitle" ref="subtitle">
+      <div class="subtitle" ref="refSubtitle">
         <div class="description">
           <slot name="description"></slot>
         </div>
       </div>
 
-      <SafeTeleport :to="$screen.width >= 1024 ? subtitle : title" auto-update>
-        <div class="decoration-links">
+      <SafeTeleport :to="$screen.width >= 1024 ? refSubtitle : refTitle" auto-update>
+        <div
+          class="decoration-links disable-scrollbars overflow-scroll-mask"
+          ref="refLinks"
+          @scroll="onMaskedScroll"
+        >
           <div v-for="(link, index) in links" :key="index" class="link">
             <a :href="link.url" class="link-name">{{ link.name }}</a>
             <a :href="link.url" class="link-icon">
@@ -85,7 +135,7 @@ const subtitle = ref(null)
         </div>
       </SafeTeleport>
 
-      <SafeTeleport :to="$screen.width >= 1024 ? title : subtitle" auto-update>
+      <SafeTeleport :to="$screen.width >= 1024 ? refTitle : refSubtitle" auto-update>
         <h1 class="name">
           <slot name="name"></slot>
         </h1>
@@ -196,6 +246,9 @@ const subtitle = ref(null)
       display: flex;
       justify-content: flex-start;
       align-items: start;
+
+      height: 3rem;
+      overflow: scroll;
     }
 
     .decoration-links {
@@ -230,12 +283,25 @@ const subtitle = ref(null)
       'avatar   title   '
       'subtitle subtitle';
     grid-template-columns: 5rem 1fr;
+    gap: 1rem;
 
     .title {
       grid-template-areas:
         'tags '
         'links';
       grid-template-rows: auto 1fr;
+
+      .decoration-links {
+        grid-area: links;
+
+        gap: 0.8rem;
+
+        display: flex;
+        justify-content: flex-end;
+        align-items: end;
+
+        overflow: scroll;
+      }
     }
 
     .subtitle {
@@ -243,6 +309,7 @@ const subtitle = ref(null)
         'name'
         'desc';
       grid-template-rows: auto 1fr;
+      gap: 0;
     }
   }
 }
@@ -251,6 +318,7 @@ const subtitle = ref(null)
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 2rem;
   gap: 0.2rem;
 
   .link-icon {
@@ -278,6 +346,8 @@ const subtitle = ref(null)
       color: var(--color-link);
     }
   }
+
+  flex-shrink: 0;
 }
 
 .tag {
@@ -292,5 +362,18 @@ const subtitle = ref(null)
   background: var(--color-tag);
 
   flex-shrink: 0;
+}
+
+.overflow-scroll-mask {
+  --mask-fade-radius-start: 2rem;
+  --mask-fade-radius-end: 2rem;
+
+  mask: linear-gradient(
+    to right,
+    rgba(255, 255, 255, var(--mask-opacity-start)) 0%,
+    black var(--mask-fade-radius-start),
+    black calc(100% - var(--mask-fade-radius-end)),
+    rgba(255, 255, 255, var(--mask-opacity-end)) 100%
+  );
 }
 </style>
