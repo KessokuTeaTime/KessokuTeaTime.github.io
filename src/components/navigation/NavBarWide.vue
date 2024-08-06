@@ -72,6 +72,13 @@ function updateWindowScrollY() {
 }
 onMounted(() => {
   window.addEventListener('scroll', updateWindowScrollY)
+
+  protectorLeadingEdge.effect.trigger()
+  protectorTrailingEdge.effect.trigger()
+  navsWidth.effect.trigger()
+  currentNavOffset.effect.trigger()
+  spacerLeadingWidth.effect.trigger()
+  spacerTrailingWidth.effect.trigger()
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', updateWindowScrollY)

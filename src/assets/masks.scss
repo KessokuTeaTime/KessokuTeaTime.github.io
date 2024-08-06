@@ -1,0 +1,14 @@
+:root {
+  --mask-fade-radius-start: 10px;
+  --mask-fade-radius-end: 10px;
+}
+
+:root {
+  --mask-h-both: linear-gradient(
+    to right,
+    transparent,
+    black var(--mask-fade-radius-start),
+    black calc(100% - var(--mask-fade-radius-end)),
+    transparent 100%
+  );
+}

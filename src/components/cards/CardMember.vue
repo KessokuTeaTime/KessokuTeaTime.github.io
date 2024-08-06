@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Color } from '@/scripts/color'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { computed, type PropType } from 'vue'
+import { computed, ref, type PropType } from 'vue'
+import SafeTeleport from '../utils/SafeTeleport.vue'
 
 const props = defineProps({
   avatar: {
@@ -34,18 +35,30 @@ const tintMute = computed(() => {
 const tintSelection = computed(() => {
   return props.color.normalize().withAlpha(0.1).toCss()
 })
+
+const title = ref(null)
+const subtitle = ref(null)
 </script>
 
 <template>
   <div class="card blur font-space-grotesk">
     <div class="header">
       <img class="avatar" :src="avatar" />
-      <div class="title">
-        <h1 class="title-name">
+
+      <div class="title" ref="title">
+        <h1 class="name">
           <slot name="name"></slot>
         </h1>
+      </div>
 
-        <div class="decoration-tags">
+      <div class="subtitle" ref="subtitle">
+        <div class="description">
+          <slot name="description"></slot>
+        </div>
+      </div>
+
+      <SafeTeleport :to="$screen.width >= 1024 ? title : subtitle">
+        <div class="decoration-tags disable-scrollbars">
           <div
             v-for="(tag, index) in tags"
             :key="index"
@@ -63,13 +76,12 @@ const tintSelection = computed(() => {
             </slot>
           </div>
         </div>
-      </div>
+      </SafeTeleport>
 
-      <div class="subtitle">
-        <div class="subtitle-description">
-          <slot name="description"></slot>
-        </div>
-
+      <SafeTeleport
+        :to="$screen.width >= 1024 ? subtitle : title"
+        v-if="$screen.width >= 1024 ? subtitle : title"
+      >
         <div class="decoration-links">
           <div v-for="(link, index) in links" :key="index" class="link">
             <a :href="link.url" class="link-name">{{ link.name }}</a>
@@ -80,7 +92,7 @@ const tintSelection = computed(() => {
             </a>
           </div>
         </div>
-      </div>
+      </SafeTeleport>
     </div>
     <div class="footer blur">
       <div class="body"></div>
@@ -116,7 +128,7 @@ const tintSelection = computed(() => {
   }
 
   transition: scale 0.4s;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .header {
@@ -150,8 +162,9 @@ const tintSelection = computed(() => {
     display: grid;
     grid-template-areas: 'name tags';
     grid-template-columns: 1fr auto;
+    gap: 1rem;
 
-    .title-name {
+    .name {
       grid-area: name;
 
       display: flex;
@@ -167,6 +180,8 @@ const tintSelection = computed(() => {
       display: flex;
       justify-content: flex-end;
       align-items: start;
+
+      overflow: scroll;
     }
   }
 
@@ -176,8 +191,9 @@ const tintSelection = computed(() => {
     display: grid;
     grid-template-areas: 'desc links';
     grid-template-columns: 1fr auto;
+    gap: 1rem;
 
-    .subtitle-description {
+    .description {
       grid-area: desc;
 
       display: flex;
@@ -208,6 +224,29 @@ const tintSelection = computed(() => {
 
     padding: 2rem;
     background: var(--color-background-soft);
+  }
+}
+
+@media (width < 1024px) {
+  .header {
+    grid-template-areas:
+      'avatar   title   '
+      'subtitle subtitle';
+    grid-template-columns: 5rem 1fr;
+
+    .title {
+      grid-template-areas:
+        'tags '
+        'links';
+      grid-template-rows: auto 1fr;
+    }
+
+    .subtitle {
+      grid-template-areas:
+        'name'
+        'desc';
+      grid-template-rows: auto 1fr;
+    }
   }
 }
 
@@ -245,16 +284,16 @@ const tintSelection = computed(() => {
 }
 
 .tag {
-  font-size: 0.8rem;
-
   display: flex;
   justify-content: center;
   align-items: first baseline;
 
-  padding: 0.1rem 0.8rem;
-  border-radius: 0.4rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.6rem;
 
   color: var(--color-tag-text);
   background: var(--color-tag);
+
+  flex-shrink: 0;
 }
 </style>
