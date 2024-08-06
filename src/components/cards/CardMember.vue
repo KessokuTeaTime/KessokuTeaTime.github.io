@@ -46,18 +46,6 @@ const subtitle = ref(null)
       <img class="avatar" :src="avatar" />
 
       <div class="title" ref="title">
-        <h1 class="name">
-          <slot name="name"></slot>
-        </h1>
-      </div>
-
-      <div class="subtitle" ref="subtitle">
-        <div class="description">
-          <slot name="description"></slot>
-        </div>
-      </div>
-
-      <SafeTeleport :to="$screen.width >= 1024 ? title : subtitle">
         <div class="decoration-tags disable-scrollbars">
           <div
             v-for="(tag, index) in tags"
@@ -76,12 +64,15 @@ const subtitle = ref(null)
             </slot>
           </div>
         </div>
-      </SafeTeleport>
+      </div>
 
-      <SafeTeleport
-        :to="$screen.width >= 1024 ? subtitle : title"
-        v-if="$screen.width >= 1024 ? subtitle : title"
-      >
+      <div class="subtitle" ref="subtitle">
+        <div class="description">
+          <slot name="description"></slot>
+        </div>
+      </div>
+
+      <SafeTeleport :to="$screen.width >= 1024 ? subtitle : title" auto-update>
         <div class="decoration-links">
           <div v-for="(link, index) in links" :key="index" class="link">
             <a :href="link.url" class="link-name">{{ link.name }}</a>
@@ -92,6 +83,12 @@ const subtitle = ref(null)
             </a>
           </div>
         </div>
+      </SafeTeleport>
+
+      <SafeTeleport :to="$screen.width >= 1024 ? title : subtitle" auto-update>
+        <h1 class="name">
+          <slot name="name"></slot>
+        </h1>
       </SafeTeleport>
     </div>
     <div class="footer blur">
