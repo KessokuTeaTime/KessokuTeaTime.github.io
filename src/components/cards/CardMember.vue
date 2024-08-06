@@ -98,7 +98,7 @@ onMounted(() => {
             :key="index"
             class="tag"
             :style="{
-              '--color-tag': typeof tag === 'object' ? tag.color.toCss() : 'var(--color-tint)',
+              '--color-tag': typeof tag === 'object' ? tag.color.toCss() : tint,
               '--color-tag-text':
                 typeof tag === 'object' && tag.textColor
                   ? (tag.textColor || props.color).toCss()
@@ -246,9 +246,6 @@ onMounted(() => {
       display: flex;
       justify-content: flex-start;
       align-items: start;
-
-      height: 3rem;
-      overflow: scroll;
     }
 
     .decoration-links {

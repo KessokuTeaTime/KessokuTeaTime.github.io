@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 <template>
   <div class="card-container">
     <CardMember
+      :color="Color.red"
       :links="[
         { name: 'GitHub', url: 'https://github.com', faIcon: ['fab', 'github'] },
         { name: 'Test', url: 'https://google.com' }
