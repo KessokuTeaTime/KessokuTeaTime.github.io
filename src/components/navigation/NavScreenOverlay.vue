@@ -67,13 +67,13 @@ nav {
 
   opacity: v-bind(opacity);
   filter: blur(calc((1 - v-bind(opacity)) * 1rem));
-  transform: translateY(calc(1rem * (1 - v-bind(opacity))))
+  transform: translateY(calc(3rem * (1 - v-bind(opacity))))
     scaleY(calc(1 + calc(1 - v-bind(opacity)) * 0.2));
 
   transition:
-    opacity 0.4s,
-    filter 0.4s,
-    transform 0.4s v-bind(animationCurve);
+    opacity 0.5s,
+    filter 0.5s,
+    transform 0.5s v-bind(animationCurve);
 }
 
 .nav-footer {

@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { useHead } from 'unhead'
+import { Color } from '@/scripts/color'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -40,11 +42,32 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const { title, description } = to.meta
-  document.title = (title as string) || 'Kessoku Tea Time'
+  const { title, description, themeColor } = to.meta
 
-  const metaDescription = document.querySelector('head meta[name="description"]')
-  metaDescription?.setAttribute('content', (description as string) || '')
+  const fallbackTitle = 'Kessoku Tea Time'
+  const fallbackDescription = ''
+  const fallbackThemeColor = { light: Color.getWhite(), dark: Color.getBlack() }
+
+  useHead({
+    title: title || fallbackTitle,
+    meta: [
+      { name: 'description', content: description || fallbackDescription },
+      {
+        name: 'theme-color',
+        content: (
+          (themeColor instanceof Color ? themeColor : themeColor?.light) || fallbackThemeColor.light
+        ).toRGBA(),
+        media: '(prefers-color-scheme: light)'
+      },
+      {
+        name: 'theme-color',
+        content: (
+          (themeColor instanceof Color ? themeColor : themeColor?.dark) || fallbackThemeColor.dark
+        ).toRGBA(),
+        media: '(prefers-color-scheme: dark)'
+      }
+    ]
+  })
 })
 
 export default router

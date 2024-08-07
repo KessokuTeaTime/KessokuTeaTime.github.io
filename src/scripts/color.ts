@@ -1,7 +1,16 @@
 export type NamedColor = 'red' | 'blue' | 'pink' | 'yellow'
 export type NamedOpacity = undefined | 'soft' | 'mute'
 
-export class Color {
+export interface Color {
+  r: number
+  g: number
+  b: number
+  a: number
+
+  toRGBA(): string
+}
+
+export class Color implements Color {
   public r: number
   public g: number
   public b: number = 0
@@ -25,6 +34,9 @@ export class Color {
   public static yellow = this.fromName('yellow')
   public static yellowSoft = this.fromName('yellow', 'soft')
   public static yellowMute = this.fromName('yellow', 'mute')
+
+  public static getBlack = () => getVariableColor('--vt-c-black')!
+  public static getWhite = () => getVariableColor('--vt-c-white')!
 
   constructor(
     r: number,
@@ -50,47 +62,67 @@ export class Color {
     return new Color(0, 0, 0, undefined, name, opacity)
   }
 
-  public static fromHex(hex: string): Color {
-    const r = parseInt(hex.slice(1, 3), 16)
-    const g = parseInt(hex.slice(3, 5), 16)
-    const b = parseInt(hex.slice(5, 7), 16)
-    const a = parseInt(hex.slice(7, 9), 16) || 1
-    return new Color(r, g, b, a)
+  public static fromHexARGB(hex: number): Color {
+    const a = ((hex >> 24) & 0xff) / 0xff
+    const r = (hex >> 16) & 0xff
+    const g = (hex >> 8) & 0xff
+    const b = hex & 0xff
+    return Color.fromRGBA(r, g, b, a)
+  }
+
+  public static fromHexRGBA(hex: number): Color {
+    const r = (hex >> 24) & 0xff
+    const g = (hex >> 16) & 0xff
+    const b = (hex >> 8) & 0xff
+    const a = (hex & 0xff) / 0xff
+    return Color.fromRGBA(r, g, b, a)
+  }
+
+  public static fromHex(hex: number): Color {
+    return this.fromHexARGB(hex)
   }
 
   public static fromString(str: string): Color {
-    const hasAlpha = str.startsWith('rgba')
-    const parts = str.replace(/.+\(/, '').replace(/\).+/, '').split(',')
+    const isHex = /^#[0-9A-F]{6,8}$/i.test(str)
 
-    const r = parseInt(parts[0])
-    const g = parseInt(parts[1])
-    const b = parseInt(parts[2])
-    if (hasAlpha) {
-      const a = parseFloat(parts[3])
-      return new Color(r, g, b, a)
+    if (isHex) {
+      const hex = parseInt(str.replace('#', ''), 16)
+      const hasAlpha = str.replace('#', '').length > 6
+      if (hasAlpha) {
+        return Color.fromHexRGBA(hex)
+      } else {
+        return Color.fromHex(hex)
+      }
     } else {
-      return new Color(r, g, b)
+      const hasAlpha = str.startsWith('rgba')
+      const parts = str.replace(/.+\(/, '').replace(/\).+/, '').split(',')
+
+      const r = parseInt(parts[0])
+      const g = parseInt(parts[1])
+      const b = parseInt(parts[2])
+
+      if (hasAlpha) {
+        const a = parseFloat(parts[3])
+        return Color.fromRGBA(r, g, b, a)
+      } else {
+        return Color.fromRGBA(r, g, b)
+      }
     }
   }
 
-  normalize(): Color {
+  public toNormalized(): Color {
     if (this.isNamed()) {
-      const cssVar = getComputedStyle(document.documentElement).getPropertyValue(this.toNamedCss()!)
-      if (cssVar) {
-        return Color.fromString(cssVar)
-      } else {
-        return this
-      }
+      return getVariableColor(this.toRawCss()!) || this
     } else {
       return this
     }
   }
 
-  public toRGBA(): string {
+  public toRawRGBA(): string {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`
   }
 
-  public toNamedCss(): string | undefined {
+  public toRawCss(): string | undefined {
     if (this.isNamed()) {
       const prefix = '--color-tint'
       const suffix = this.opacity ? `${this.opacity}` : undefined
@@ -107,15 +139,26 @@ export class Color {
     }
   }
 
-  public toCss(): string {
-    return this.normalize().toRGBA()
+  public toRGBA(): string {
+    return this.toNormalized().toRawRGBA()
   }
 
   public isNamed(): boolean {
     return this.name !== undefined
   }
 
-  public withAlpha(a: number): Color {
-    return new Color(this.r, this.g, this.b, a, this.name, this.opacity)
+  public withAlpha(a: number, normalize: boolean = true): Color {
+    if (normalize) {
+      return this.toNormalized().withAlpha(a, false)
+    } else {
+      return new Color(this.r, this.g, this.b, a, this.name, this.opacity)
+    }
+  }
+}
+
+export function getVariableColor(cssVarName: string): Color | undefined {
+  const cssVar = getComputedStyle(document.documentElement).getPropertyValue(cssVarName)
+  if (cssVar) {
+    return Color.fromString(cssVar)
   }
 }

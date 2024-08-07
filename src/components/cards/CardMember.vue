@@ -24,16 +24,16 @@ const props = defineProps({
 })
 
 const tint = computed(() => {
-  return props.color.normalize().withAlpha(1).toCss()
+  return props.color.withAlpha(1).toRGBA()
 })
 const tintSoft = computed(() => {
-  return props.color.normalize().withAlpha(0.5).toCss()
+  return props.color.withAlpha(0.5).toRGBA()
 })
 const tintMute = computed(() => {
-  return props.color.normalize().withAlpha(0.2).toCss()
+  return props.color.withAlpha(0.2).toRGBA()
 })
 const tintSelection = computed(() => {
-  return props.color.normalize().withAlpha(0.1).toCss()
+  return props.color.withAlpha(0.1).toRGBA()
 })
 
 const refTitle = ref<HTMLElement | null>(null)
@@ -98,10 +98,10 @@ onMounted(() => {
             :key="index"
             class="tag"
             :style="{
-              '--color-tag': typeof tag === 'object' ? tag.color.toCss() : tint,
+              '--color-tag': typeof tag === 'object' ? tag.color.toRGBA() : tint,
               '--color-tag-text':
                 typeof tag === 'object' && tag.textColor
-                  ? (tag.textColor || props.color).toCss()
+                  ? (tag.textColor || props.color).toRGBA()
                   : 'var(--color-background)'
             }"
           >

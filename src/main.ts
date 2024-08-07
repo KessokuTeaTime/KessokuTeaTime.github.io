@@ -1,6 +1,7 @@
 import './assets/main.scss'
 
 import VueScreen from 'vue-screen'
+import { createHead } from 'unhead'
 
 /* fontawesome */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -16,6 +17,7 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
+createHead()
 
 app.use(router)
 app.use(VueScreen)
