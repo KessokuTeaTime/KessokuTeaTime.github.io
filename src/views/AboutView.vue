@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
       ]"
       :tags="[
         'Lorem Ipsum',
-        { name: 'A Colored Tag', color: Color.fromName('blue') },
+        { name: 'A Colored Tag', color: Color.fromCss('blue') },
         '世界第一可爱'
       ]"
     >

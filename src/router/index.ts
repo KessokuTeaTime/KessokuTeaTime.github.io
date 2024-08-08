@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useHead } from 'unhead'
-import { Color } from '@/scripts/color'
+import { Color, getVariableColor } from '@/scripts/color'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -46,7 +46,7 @@ router.beforeEach((to) => {
 
   const fallbackTitle = 'Kessoku Tea Time'
   const fallbackDescription = ''
-  const fallbackThemeColor = { light: Color.getWhite(), dark: Color.getBlack() }
+  const fallbackThemeColor = { light: Color.white, dark: Color.black }
 
   useHead({
     title: title || fallbackTitle,

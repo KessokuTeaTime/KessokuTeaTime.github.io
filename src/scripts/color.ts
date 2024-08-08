@@ -1,5 +1,7 @@
-export type NamedColor = 'red' | 'blue' | 'pink' | 'yellow'
-export type NamedOpacity = undefined | 'soft' | 'mute'
+export type ColorName = 'red' | 'blue' | 'pink' | 'yellow'
+export type ColorOpacity = undefined | 'soft' | 'mute'
+
+export type ColorCss = string | { name: ColorName; opacity?: ColorOpacity }
 
 export interface Color {
   r: number
@@ -16,50 +18,47 @@ export class Color implements Color {
   public b: number = 0
   public a: number = 1
 
-  public name: NamedColor | undefined = undefined
-  public opacity: NamedOpacity | undefined = undefined
+  public css: ColorCss | undefined = undefined
 
-  public static red = this.fromName('red')
-  public static redSoft = this.fromName('red', 'soft')
-  public static redMute = this.fromName('red', 'mute')
+  public static red = this.fromCss({ name: 'red' })
+  public static redSoft = this.fromCss({ name: 'red', opacity: 'soft' })
+  public static redMute = this.fromCss({ name: 'red', opacity: 'mute' })
 
-  public static blue = this.fromName('blue')
-  public static blueSoft = this.fromName('blue', 'soft')
-  public static blueMute = this.fromName('blue', 'mute')
+  public static blue = this.fromCss({ name: 'blue' })
+  public static blueSoft = this.fromCss({ name: 'blue', opacity: 'soft' })
+  public static blueMute = this.fromCss({ name: 'blue', opacity: 'mute' })
 
-  public static pink = this.fromName('pink')
-  public static pinkSoft = this.fromName('pink', 'soft')
-  public static pinkMute = this.fromName('pink', 'mute')
+  public static pink = this.fromCss({ name: 'pink' })
+  public static pinkSoft = this.fromCss({ name: 'pink', opacity: 'soft' })
+  public static pinkMute = this.fromCss({ name: 'pink', opacity: 'mute' })
 
-  public static yellow = this.fromName('yellow')
-  public static yellowSoft = this.fromName('yellow', 'soft')
-  public static yellowMute = this.fromName('yellow', 'mute')
+  public static yellow = this.fromCss({ name: 'yellow' })
+  public static yellowSoft = this.fromCss({ name: 'yellow', opacity: 'soft' })
+  public static yellowMute = this.fromCss({ name: 'yellow', opacity: 'mute' })
 
-  public static getBlack = () => getVariableColor('--vt-c-black')!
-  public static getWhite = () => getVariableColor('--vt-c-white')!
+  public static black = Color.fromCss('--vt-c-black')
+  public static white = Color.fromCss('--vt-c-white')
 
   constructor(
     r: number,
     g: number,
     b: number,
     a: number = 1,
-    name: NamedColor | undefined = undefined,
-    opacity: NamedOpacity | undefined = undefined
+    name: ColorCss | undefined = undefined
   ) {
     this.r = r
     this.g = g
     this.b = b
     this.a = a
-    this.name = name
-    this.opacity = opacity
+    this.css = name
   }
 
   public static fromRGBA(r: number, g: number, b: number, a: number = 1): Color {
     return new Color(r, g, b, a)
   }
 
-  public static fromName(name: NamedColor, opacity: NamedOpacity = undefined): Color {
-    return new Color(0, 0, 0, undefined, name, opacity)
+  public static fromCss(css: ColorCss): Color {
+    return new Color(0, 0, 0, undefined, css)
   }
 
   public static fromHexARGB(hex: number): Color {
@@ -67,6 +66,7 @@ export class Color implements Color {
     const r = (hex >> 16) & 0xff
     const g = (hex >> 8) & 0xff
     const b = hex & 0xff
+
     return Color.fromRGBA(r, g, b, a)
   }
 
@@ -75,11 +75,12 @@ export class Color implements Color {
     const g = (hex >> 16) & 0xff
     const b = (hex >> 8) & 0xff
     const a = (hex & 0xff) / 0xff
+
     return Color.fromRGBA(r, g, b, a)
   }
 
   public static fromHex(hex: number): Color {
-    return this.fromHexARGB(hex)
+    return this.fromHexARGB(hex | 0xff000000)
   }
 
   public static fromString(str: string): Color {
@@ -111,7 +112,7 @@ export class Color implements Color {
   }
 
   public toNormalized(): Color {
-    if (this.isNamed()) {
+    if (this.hasCss()) {
       return getVariableColor(this.toRawCss()!) || this
     } else {
       return this
@@ -123,17 +124,22 @@ export class Color implements Color {
   }
 
   public toRawCss(): string | undefined {
-    if (this.isNamed()) {
-      const prefix = '--color-tint'
-      const suffix = this.opacity ? `${this.opacity}` : undefined
-      let css: string
-      if (suffix) {
-        css = `${prefix}-${this.name}-${suffix}`
+    if (this.hasCss()) {
+      let result: string
+      if (typeof this.css === 'string') {
+        result = this.css
       } else {
-        css = `${prefix}-${this.name}`
+        const prefix = '--color-tint'
+        const suffix = this.css?.opacity ? `${this.css.opacity}` : undefined
+
+        if (suffix) {
+          result = `${prefix}-${this.css}-${suffix}`
+        } else {
+          result = `${prefix}-${this.css}`
+        }
       }
 
-      return css
+      return result
     } else {
       return undefined
     }
@@ -143,15 +149,15 @@ export class Color implements Color {
     return this.toNormalized().toRawRGBA()
   }
 
-  public isNamed(): boolean {
-    return this.name !== undefined
+  public hasCss(): boolean {
+    return this.css !== undefined
   }
 
   public withAlpha(a: number, normalize: boolean = true): Color {
     if (normalize) {
       return this.toNormalized().withAlpha(a, false)
     } else {
-      return new Color(this.r, this.g, this.b, a, this.name, this.opacity)
+      return new Color(this.r, this.g, this.b, a, this.css)
     }
   }
 }
