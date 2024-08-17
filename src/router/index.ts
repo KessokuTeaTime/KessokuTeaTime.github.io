@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useHead } from 'unhead'
-import { Color, getVariableColor } from '@/scripts/color'
+import { Color } from '@/scripts/color'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),

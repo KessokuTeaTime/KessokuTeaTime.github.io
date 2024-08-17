@@ -35,6 +35,7 @@ const tintMute = computed(() => {
 const tintSelection = computed(() => {
   return props.color.withAlpha(0.1).toRGBA()
 })
+console.log(props.color.toRawCss())
 
 const refTitle = ref<HTMLElement | null>(null)
 const refSubtitle = ref<HTMLElement | null>(null)

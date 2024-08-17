@@ -15,7 +15,7 @@ export interface Color {
 export class Color implements Color {
   public r: number
   public g: number
-  public b: number = 0
+  public b: number
   public a: number = 1
 
   public css: ColorCss | undefined = undefined
@@ -44,13 +44,13 @@ export class Color implements Color {
     g: number,
     b: number,
     a: number = 1,
-    name: ColorCss | undefined = undefined
+    css: ColorCss | undefined = undefined
   ) {
     this.r = r
     this.g = g
     this.b = b
     this.a = a
-    this.css = name
+    this.css = css
   }
 
   public static fromRGBA(r: number, g: number, b: number, a: number = 1): Color {
@@ -133,9 +133,9 @@ export class Color implements Color {
         const suffix = this.css?.opacity ? `${this.css.opacity}` : undefined
 
         if (suffix) {
-          result = `${prefix}-${this.css}-${suffix}`
+          result = `${prefix}-${this.css?.name}-${suffix}`
         } else {
-          result = `${prefix}-${this.css}`
+          result = `${prefix}-${this.css?.name}`
         }
       }
 

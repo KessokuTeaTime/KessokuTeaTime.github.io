@@ -12,11 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
         { name: 'GitHub', url: 'https://github.com', faIcon: ['fab', 'github'] },
         { name: 'Test', url: 'https://google.com' }
       ]"
-      :tags="[
-        'Lorem Ipsum',
-        { name: 'A Colored Tag', color: Color.fromCss('blue') },
-        '世界第一可爱'
-      ]"
+      :tags="['Lorem Ipsum', { name: 'A Colored Tag', color: Color.blue }, '世界第一可爱']"
     >
       <template #name>Member</template>
       <template #description>
@@ -44,9 +40,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 <style scoped>
 .card-container {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 2rem;
   gap: 2rem;
 
